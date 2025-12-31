@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foresight SDK Guide | Developer Documentation</title>
+  <link rel="icon" type="image/x-icon" href="foresight_favicon.ico">
+  <link rel="icon" type="image/png" sizes="150x150" href="foresight_favicon_150x150.png">
+  <link rel="apple-touch-icon" href="foresight_favicon_150x150.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="foresight-sdk-docs.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="#" class="logo">
+          <img src="foresightlogo.png" alt="Foresight" class="logo-img">
+          <span class="logo-divider"></span>
+          <span class="logo-sub">SDK Documentation</span>
+        </a>
+      </div>
+      <div class="nav-center">
+        <ul class="nav-menu">
+          <li><a href="#introduction" class="nav-link">Introduction</a></li>
+          <li><a href="#receiver" class="nav-link">SDK Receiver</a></li>
+          <li><a href="#sender" class="nav-link">SDK Sender</a></li>
+          <li><a href="#best-practices" class="nav-link">Best Practices</a></li>
+          <li><a href="#support" class="nav-link">Resources</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+      </div>
+    </nav>
+  </header>
+
+  <!-- Left Sidebar - Main Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="sidebar-section">
+        <h4 class="sidebar-title">1. Introduction</h4>
+        <ul class="sidebar-nav">
+          <li><a href="#introduction" class="sidebar-link">Overview</a></li>
+          <li><a href="#purpose" class="sidebar-link">1.1 Purpose of the SDK</a></li>
+          <li><a href="#target-audience" class="sidebar-link">1.2 Target Audience</a></li>
+          <li><a href="#system-overview" class="sidebar-link">1.3 System Overview</a></li>
+          <li><a href="#data-accessing-api" class="sidebar-link">1.4 Data Accessing API</a></li>
+          <li><a href="#data-sending-api" class="sidebar-link">1.5 Data Sending API</a></li>
+          <li><a href="#communication-protocols" class="sidebar-link">1.6 Communication Protocols</a></li>
+          <li><a href="#glossary" class="sidebar-link">1.7 Glossary</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h4 class="sidebar-title">2. SDK Receiver</h4>
+        <ul class="sidebar-nav">
+          <li><a href="#receiver" class="sidebar-link">Overview</a></li>
+          <li>
+            <a href="#data-types" class="sidebar-link">2.1 Data</a>
+            <ul class="sidebar-subnav">
+              <li><a href="#message-types" class="sidebar-sublink">2.1.1 Message Types</a></li>
+              <li>
+                <a href="#data-structures" class="sidebar-sublink">2.1.2 Data Types</a>
+                <ul class="sidebar-subnav-deep">
+                  <li><a href="#dt-commondata">CommonData</a></li>
+                  <li><a href="#dt-matrixdata">MatrixData</a></li>
+                  <li><a href="#dt-obstaclesdata">ObstaclesData</a></li>
+                  <li><a href="#dt-obstacle">Obstacle</a></li>
+                  <li><a href="#dt-viodata">VisualInertialOdometryData</a></li>
+                  <li><a href="#dt-point3d">Point3D</a></li>
+                  <li><a href="#dt-edgedetection">EdgeDetectionData</a></li>
+                  <li><a href="#dt-streaminfo">StreamInfo</a></li>
+                  <li><a href="#dt-streaminfoconfig">StreamInfoConfig</a></li>
+                  <li><a href="#dt-visionsource">VisionSource</a></li>
+                  <li><a href="#dt-motiondatainfo">MotionDataInfo</a></li>
+                  <li><a href="#dt-directiondata">DirectionData</a></li>
+                  <li><a href="#dt-fpsdata">FpsData</a></li>
+                  <li><a href="#dt-autocalibmatrices">AutoCalibMatricesData</a></li>
+                  <li><a href="#dt-statistics">Statistics</a></li>
+                  <li><a href="#dt-modulestatistics">ModuleStatistics</a></li>
+                  <li><a href="#dt-ffcstatus">FfcStatus</a></li>
+                  <li><a href="#dt-disparitystatus">DisparityStatus</a></li>
+                  <li><a href="#dt-autocalibstatus">AutoCalibStatus</a></li>
+                  <li><a href="#dt-inputstatus">InputStatus</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#enumerations" class="sidebar-sublink">2.1.3 Enumerations</a>
+                <ul class="sidebar-subnav-deep">
+                  <li><a href="#enum-msgtype">MsgType</a></li>
+                  <li><a href="#enum-imageformat">ImageFormat</a></li>
+                  <li><a href="#enum-visionsourcechannel">VisionSourceChannel</a></li>
+                  <li><a href="#enum-ffcstatusvalue">FfcStatusValue</a></li>
+                  <li><a href="#enum-openmode">OpenMode</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#callbacks" class="sidebar-link">2.2 Callbacks</a>
+            <ul class="sidebar-subnav">
+              <li><a href="#callbacks-overview" class="sidebar-sublink">2.2.1 Overview</a></li>
+              <li>
+                <a href="#callbacks-definition" class="sidebar-sublink">2.2.2 Callbacks Definition</a>
+              </li>
+              <li><a href="#data-request" class="sidebar-sublink">2.2.3 Data Request</a></li>
+              <li>
+                <a href="#buffer-parsing" class="sidebar-sublink">2.2.4 Buffer Data Parsing</a>
+                <ul class="sidebar-subnav-deep">
+                  <li><a href="#parse-image">Image Buffer</a></li>
+                  <li><a href="#parse-pcl">Point Cloud Buffer</a></li>
+                  <li><a href="#parse-depth">Depth Map Buffer</a></li>
+                  <li><a href="#parse-mask">Mask Image Buffer</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="#sender-interface" class="sidebar-link">2.3 Client—Foresight Service Communication</a></li>
+          <li><a href="#workflow" class="sidebar-link">2.4 Receiver Common Workflow</a></li>
+          <li>
+            <a href="#examples" class="sidebar-link">2.5 SDK Example Applications</a>
+            <ul class="sidebar-subnav">
+              <li><a href="#examples-overview" class="sidebar-sublink">2.5.1 Overview</a></li>
+              <li><a href="#common-features" class="sidebar-sublink">2.5.2 Common Features</a></li>
+              <li>
+                <a href="#sdk-examples" class="sidebar-sublink">2.5.3 SDK Examples</a>
+                <ul class="sidebar-subnav-deep">
+                  <li><a href="#playback-mode">Playback Mode</a></li>
+                  <li><a href="#algo-mode">Algo Mode</a></li>
+                  <li><a href="#record-mode">Record Mode</a></li>
+                </ul>
+              </li>
+              <li><a href="#example-location" class="sidebar-sublink">2.5.4 SDK Example Code</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h4 class="sidebar-title">3. SDK Sender</h4>
+        <ul class="sidebar-nav">
+          <li><a href="#sender" class="sidebar-link">3.1 Overview</a></li>
+          <li><a href="#network-config" class="sidebar-link">3.2 Network Configuration</a></li>
+          <li>
+            <a href="#communication" class="sidebar-link">3.3 Communication Protocols</a>
+            <ul class="sidebar-subnav">
+              <li><a href="#video-frames-protocol" class="sidebar-sublink">3.3.1 Video Frames Protocol</a></li>
+              <li><a href="#data-chunking" class="sidebar-sublink">3.3.2 Data Chunking</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#client-udp" class="sidebar-link">3.4 Client UDP Sender</a>
+            <ul class="sidebar-subnav">
+              <li><a href="#client-interface" class="sidebar-sublink">3.4.1 Interface</a></li>
+              <li><a href="#key-functions" class="sidebar-sublink">3.4.2 Key Functions and Notes</a></li>
+              <li><a href="#execution-steps" class="sidebar-sublink">3.4.3 Execution Steps</a></li>
+              <li><a href="#sender-example" class="sidebar-sublink">3.4.4 Client UDP Sender Example</a></li>
+              <li><a href="#running-sender" class="sidebar-sublink">3.4.5 Running the Example</a></li>
+              <li><a href="#bpp" class="sidebar-sublink">3.4.6 Bits Per Pixel (BPP)</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h4 class="sidebar-title">4. Reference</h4>
+        <ul class="sidebar-nav">
+          <li><a href="#best-practices" class="sidebar-link">4.1 Best Practices</a></li>
+          <li><a href="#support" class="sidebar-link">4.2 Support &amp; Resources</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+      
+      <!-- Hero Section -->
+      <section class="doc-hero">
+        <div class="doc-hero-content">
+          <div class="doc-badge">Developer Documentation</div>
+          <h1>Foresight Software Development Kit Guide</h1>
+          <p class="doc-hero-subtitle">Full Guide for Receiver &amp; Sender Integration</p>
+          <div class="doc-meta">
+            <span class="meta-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Last Updated: November 2025
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <section class="doc-section">
+        <div class="callout callout-warning">
+          <div class="callout-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="callout-content">
+            <h4>Confidentiality Notice</h4>
+            <p>This document contains proprietary and confidential material of Foresight. Any unauthorized reproduction, use, or disclosure of this material, or any part thereof, is strictly prohibited. This document is solely for the use of Foresight and its named recipients.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SECTION 1: INTRODUCTION -->
+      <!-- ============================================ -->
+      <section id="introduction" class="doc-section" data-section="introduction">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2>Introduction</h2>
+        </div>
+        
+        <div id="purpose" class="doc-subsection">
+          <h3>1.1 Purpose of the SDK</h3>
+          <p>The Foresight SDK provides developers and integrators with a robust and flexible software interface to access, control, and process data from Foresight's multi-spectral stereo vision systems. It enables the integration of advanced perception capabilities, such as obstacle detection and depth estimation, into automotive, agricultural, industrial, and autonomous platforms.</p>
+          <p>The SDK supports the development and evaluation of perception algorithms, data recording, and system-level integration.</p>
+        </div>
+
+        <div id="target-audience" class="doc-subsection">
+          <h3>1.2 Target Audience</h3>
+          <p>This SDK is intended for:</p>
+          <ul class="feature-list">
+            <li>Software developers and system integrators</li>
+            <li>R&D engineers and technical teams</li>
+            <li>Teams working in ADAS, autonomous vehicles, and robotics</li>
+            <li>Intelligent vision application developers</li>
+            <li>Test engineers and data analysts</li>
+          </ul>
+          <p>It assumes familiarity with <strong>C++</strong> and <strong>Linux environments</strong>, as well as a basic understanding of computer vision and sensor interfacing.</p>
+        </div>
+
+        <div id="system-overview" class="doc-subsection">
+          <h3>1.3 System Overview</h3>
+          <p>The Foresight system combines stereo vision technology with multi-spectral imaging, using both visible light (VIS) and infrared (IR) sensors to deliver enhanced perception in a wide range of environmental conditions.</p>
+          <p>The SDK supports multiple camera configurations, including dual and quad setups, and enables synchronization across sensors over interfaces such as USB, Ethernet, and more.</p>
+          <p>The Foresight SDK utilizes a client-server model where the SDK (client) connects to the Foresight service (server) to send requests, receive data, and control system behavior. The provided SDK libraries and headers abstract the underlying transport protocols, making it easy to integrate into various client-side workflows.</p>
+        </div>
+
+        <div id="data-accessing-api" class="doc-subsection">
+          <h3>1.4 Data Accessing API</h3>
+          <p>The SDK provides high-level APIs for accessing:</p>
+          <ul class="feature-list">
+            <li>Raw and rectified stereo image streams</li>
+            <li>Depth maps</li>
+            <li>Obstacle classification outputs</li>
+            <li>Drivable area</li>
+            <li>Point clouds</li>
+            <li>Ego vehicle data</li>
+          </ul>
+        </div>
+
+        <div id="data-sending-api" class="doc-subsection">
+          <h3>1.5 Data Sending API</h3>
+          <p>The SDK provides high-level APIs for sending data over UDP protocol to the Foresight service.</p>
+        </div>
+
+        <div id="communication-protocols" class="doc-subsection">
+          <h3>1.6 Communication Protocols</h3>
+          <div class="api-cards">
+            <div class="api-card">
+              <div class="api-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <h4>UDP</h4>
+              <p>Used for client-server communication and high-bandwidth data transfer.</p>
+            </div>
+            <div class="api-card">
+              <div class="api-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+              </div>
+              <h4>MQTT</h4>
+              <p>Used for internal service communication and lightweight messaging.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="glossary" class="doc-subsection">
+          <h3>1.7 Glossary</h3>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Definition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>RC</code></td>
+                  <td>Remote Camera — a camera system that streams video data over a network.</td>
+                </tr>
+                <tr>
+                  <td><code>FS</code></td>
+                  <td>Foresight System — a local system designed to receive and process video streams from an RC.</td>
+                </tr>
+                <tr>
+                  <td><code>UDP</code></td>
+                  <td>User Datagram Protocol — a lightweight, connectionless communication protocol used for sending data packets over IP networks.</td>
+                </tr>
+                <tr>
+                  <td><code>MTU</code></td>
+                  <td>Maximum Transmission Unit — the largest size of a packet that can be transmitted over a network layer without needing fragmentation.</td>
+                </tr>
+                <tr>
+                  <td><code>BPP</code></td>
+                  <td>Image format bits per pixel.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SECTION 2: SDK RECEIVER -->
+      <!-- ============================================ -->
+      <section id="receiver" class="doc-section" data-section="receiver">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2>Foresight SDK Receiver</h2>
+        </div>
+        
+        <div class="callout callout-info">
+          <div class="callout-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <div class="callout-content">
+            <p>This section is intended for all Foresight clients.</p>
+          </div>
+        </div>
+
+        <div id="data-types" class="doc-subsection">
+          <h3>2.1 Data</h3>
+          
+          <h4 id="message-types">2.1.1 Message Types</h4>
+          <p>The Foresight SDK provides access to a wide range of data types that can be requested through its service interface. All data is transmitted from the Foresight server to the client via <B>UDP</B>. Clients have the flexibility to request the complete dataset or select specific data types based on their application requirements.<br>
+          <BR>Below is a comprehensive list of the available data types:<br></p>
+          
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>BitMsgType</th>
+                  <th>Bit</th>
+                  <th>Callback</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Left image</td>
+                  <td><code>CAMERA_FRAME_PRIMARY</code></td>
+                  <td>1</td>
+                  <td><code>image</code></td>
+                </tr>
+                <tr>
+                  <td>Right image</td>
+                  <td><code>CAMERA_FRAME_SECONDARY</code></td>
+                  <td>2</td>
+                  <td><code>image</code></td>
+                </tr>
+                <tr>
+                  <td>Object tracker AOD</td>
+                  <td><code>OBJ_TRACKER_AOD</code></td>
+                  <td>4</td>
+                  <td><code>obstacles</code></td>
+                </tr>
+                <tr>
+                  <td>Object tracker classifier</td>
+                  <td><code>OBJ_TRACKER_CLASSIFIER</code></td>
+                  <td>5</td>
+                  <td><code>obstacles</code></td>
+                </tr>
+                <tr>
+                  <td>Ego car data</td>
+                  <td><code>EGO_CAR_DATA</code></td>
+                  <td>8</td>
+                  <td><code>direction</code></td>
+                </tr>
+                <tr>
+                  <td>Filtered point cloud</td>
+                  <td><code>FILTERED_PCL</code></td>
+                  <td>10</td>
+                  <td><code>pcl</code></td>
+                </tr>
+                <tr>
+                  <td>Depth map</td>
+                  <td><code>DEPTH_PCL</code></td>
+                  <td>11</td>
+                  <td><code>image</code></td>
+                </tr>
+                <tr>
+                  <td>Frames per second</td>
+                  <td><code>FPS</code></td>
+                  <td>17</td>
+                  <td><code>fps</code></td>
+                </tr>
+                <tr>
+                  <td>Drivable area</td>
+                  <td><code>DRIVABLE_AREA</code></td>
+                  <td>30</td>
+                  <td><code>maskImage</code></td>
+                </tr>
+                <tr>
+                  <td>Visual Inertial Odometry</td>
+                  <td><code>VIO_R_T_MATRIX</code></td>
+                  <td>37</td>
+                  <td><code>vio</code></td>
+                </tr>
+                <tr>
+                  <td>Region of interest</td>
+                  <td><code>RAIL_PATH_MASK</code></td>
+                  <td>43</td>
+                  <td><code>maskImage</code></td>
+                </tr>
+                <tr>
+                  <td>Edge detection</td>
+                  <td><code>EDGE_DETECTION</code></td>
+                  <td>44</td>
+                  <td><code>edgeDetection</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 id="data-structures">2.1.2 Data Types</h4>
+          
+          <div id="dt-commondata" class="data-type-card">
+            <h5>CommonData</h5>
+            <p class="data-type-desc">A base class representing common data associated with a message, including type, stream name, frame number, and epoch time.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_type</code></td><td><code>MsgType</code></td><td>The type of the message.</td></tr>
+                  <tr><td><code>m_stream_name</code></td><td><code>std::string</code></td><td>The name of the stream associated with the message.</td></tr>
+                  <tr><td><code>m_frame_number</code></td><td><code>uint64_t</code></td><td>The unique frame number of the message.</td></tr>
+                  <tr><td><code>m_epoch</code></td><td><code>struct timeval</code></td><td>The epoch time timestamp associated with the message.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-matrixdata" class="data-type-card">
+            <h5>MatrixData</h5>
+            <p class="data-type-desc">Represents matrix data containing an image buffer and its metadata. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_buffer</code></td><td><code>const uint8_t*</code></td><td>Pointer to the raw image data buffer.</td></tr>
+                  <tr><td><code>m_length</code></td><td><code>size_t</code></td><td>Size of the buffer in bytes.</td></tr>
+                  <tr><td><code>m_width</code></td><td><code>int</code></td><td>Image width in pixels.</td></tr>
+                  <tr><td><code>m_height</code></td><td><code>int</code></td><td>Image height in pixels.</td></tr>
+                  <tr><td><code>m_format</code></td><td><code>ImageFormat</code></td><td>Pixel format of the image data.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div id="dt-obstaclesdata" class="data-type-card">
+            <h5>ObstaclesData</h5>
+            <p class="data-type-desc">A container for a collection of Obstacle objects for a specific frame. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_obstacles</code></td><td><code>std::vector&lt;Obstacle&gt;</code></td><td>A vector containing all obstacles detected in this frame.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-obstacle" class="data-type-card">
+            <h5>Obstacle</h5>
+            <p class="data-type-desc">Represents a single detected obstacle with bounding box, velocity, and positioning data.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_box_x</code></td><td><code>float</code></td><td>X-coordinate of the 2D bounding box.</td></tr>
+                  <tr><td><code>m_box_y</code></td><td><code>float</code></td><td>Y-coordinate of the 2D bounding box.</td></tr>
+                  <tr><td><code>m_box_width</code></td><td><code>float</code></td><td>Width of the 2D bounding box.</td></tr>
+                  <tr><td><code>m_box_height</code></td><td><code>float</code></td><td>Height of the 2D bounding box.</td></tr>
+                  <tr><td><code>m_id</code></td><td><code>int32_t</code></td><td>Unique identifier for the obstacle.</td></tr>
+                  <tr><td><code>m_label</code></td><td><code>uint32_t</code></td><td>Classification label of the obstacle.</td></tr>
+                  <tr><td><code>m_distance</code></td><td><code>double</code></td><td>Distance to the obstacle in meters.</td></tr>
+                  <tr><td><code>m_rel_speed</code></td><td><code>double</code></td><td>Relative speed in meters/second.</td></tr>
+                  <tr><td><code>m_ttc</code></td><td><code>float</code></td><td>Time-to-collision in seconds.</td></tr>
+                  <tr><td><code>m_on_road</code></td><td><code>bool</code></td><td>Flag for on-road status (currently unused).</td></tr>
+                  <tr><td><code>m_on_vpath</code></td><td><code>bool</code></td><td>Flag indicating if obstacle is on the region of interest path.</td></tr>
+                  <tr><td><code>m_score</code></td><td><code>float</code></td><td>Detection confidence score.</td></tr>
+                  <tr><td><code>m_age</code></td><td><code>int</code></td><td>Age of the detection (in frames).</td></tr>
+                  <tr><td><code>m_speed</code></td><td><code>int</code></td><td>Absolute speed of the obstacle.</td></tr>
+                  <tr><td><code>m_position_x</code></td><td><code>float</code></td><td>3D Position X.</td></tr>
+                  <tr><td><code>m_position_y</code></td><td><code>float</code></td><td>3D Position Y.</td></tr>
+                  <tr><td><code>m_position_z</code></td><td><code>float</code></td><td>3D Position Z.</td></tr>
+                  <tr><td><code>m_real_width</code></td><td><code>float</code></td><td>Real-world width estimate.</td></tr>
+                  <tr><td><code>m_real_height</code></td><td><code>float</code></td><td>Real-world height estimate.</td></tr>
+                  <tr><td><code>m_real_relative_vx</code></td><td><code>double</code></td><td>Real-world relative velocity (X-axis).</td></tr>
+                  <tr><td><code>m_real_relative_vy</code></td><td><code>double</code></td><td>Real-world relative velocity (Y-axis).</td></tr>
+                  <tr><td><code>m_real_relative_vz</code></td><td><code>double</code></td><td>Real-world relative velocity (Z-axis).</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-viodata" class="data-type-card">
+            <h5>VisualInertialOdometryData</h5>
+            <p class="data-type-desc">Specific data for Visual Inertial Odometry (VIO), providing 6-DOF pose data relative to the previous frame. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_yaw</code></td><td><code>float</code></td><td>Yaw angle in radians, relative to the previous frame.</td></tr>
+                  <tr><td><code>m_pitch</code></td><td><code>float</code></td><td>Pitch angle in radians, relative to the previous frame.</td></tr>
+                  <tr><td><code>m_roll</code></td><td><code>float</code></td><td>Roll angle in radians, relative to the previous frame.</td></tr>
+                  <tr><td><code>m_tx</code></td><td><code>float</code></td><td>X-Axis translation in meters.</td></tr>
+                  <tr><td><code>m_ty</code></td><td><code>float</code></td><td>Y-Axis translation in meters.</td></tr>
+                  <tr><td><code>m_tz</code></td><td><code>float</code></td><td>Z-Axis translation in meters.</td></tr>
+                  <tr><td><code>m_ooo</code></td><td><code>float</code></td><td>Indicator (1.0 or 0.0) if IMU data arrived at the VIO module.</td></tr>
+                  <tr><td><code>m_score</code></td><td><code>float</code></td><td>The confidence score of the VIO calculation.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-point3d" class="data-type-card">
+            <h5>Point3D</h5>
+            <p class="data-type-desc">Represents a coordinate point in 3D space with X, Y, and Z values.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_x</code></td><td><code>float</code></td><td>The X-coordinate value.</td></tr>
+                  <tr><td><code>m_y</code></td><td><code>float</code></td><td>The Y-coordinate value.</td></tr>
+                  <tr><td><code>m_z</code></td><td><code>float</code></td><td>The Z-coordinate value.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-edgedetection" class="data-type-card">
+            <h5>EdgeDetectionData</h5>
+            <p class="data-type-desc">Represents the results of an edge detection algorithm, containing a collection of 3D points that define the detected edges. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_edge_points</code></td><td><code>std::vector&lt;Point3D&gt;</code></td><td>A vector containing the 3D points corresponding to detected edges. Points are interleaved: even indices (0, 2, 4...) represent Left image points, odd indices (1, 3, 5...) represent Right image points.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-streaminfo" class="data-type-card">
+            <h5>StreamInfo</h5>
+            <p class="data-type-desc">Represents configuration and status information about a specific data stream.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_name</code></td><td><code>std::string</code></td><td>The name of the stream.</td></tr>
+                  <tr><td><code>m_vision_source_primary</code></td><td><code>std::string</code></td><td>The primary vision source identifier.</td></tr>
+                  <tr><td><code>m_vision_source_secondary</code></td><td><code>std::string</code></td><td>The secondary vision source identifier.</td></tr>
+                  <tr><td><code>m_direction</code></td><td><code>common::StreamDirection</code></td><td>The direction of the stream.</td></tr>
+                  <tr><td><code>m_channel</code></td><td><code>common::VisionSourceChannel</code></td><td>The vision source channel (e.g., Left/Right).</td></tr>
+                  <tr><td><code>m_gyro_serial</code></td><td><code>std::string</code></td><td>The serial number of the gyro associated with the stream.</td></tr>
+                  <tr><td><code>m_is_used</code></td><td><code>bool</code></td><td>Boolean flag indicating if the stream is currently in use.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-streaminfoconfig" class="data-type-card">
+            <h5>StreamInfoConfig</h5>
+            <p class="data-type-desc">Configuration class for managing a collection of stream information objects and global motion settings.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_stream_info</code></td><td><code>std::vector&lt;StreamInfo&gt;</code></td><td>A vector containing the configuration for all streams.</td></tr>
+                  <tr><td><code>m_motion_data_type</code></td><td><code>common::MotionDataProviderType</code></td><td>The type of the motion data provider being used.</td></tr>
+                  <tr><td><code>m_yml_mode</code></td><td><code>common::CopyYmlSource</code></td><td>The YAML mode configuration source.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-visionsource" class="data-type-card">
+            <h5>VisionSource</h5>
+            <p class="data-type-desc">Represents a vision source (camera).</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_type</code></td><td><code>common::VisionSourceType</code></td><td>The type of vision source.</td></tr>
+                  <tr><td><code>m_protocol</code></td><td><code>common::VisionSourceProtocol</code></td><td>The communication protocol used.</td></tr>
+                  <tr><td><code>m_protocol_subset</code></td><td><code>common::VisionSourceProtocolSubset</code></td><td>Subset or variant of the protocol.</td></tr>
+                  <tr><td><code>m_channel</code></td><td><code>common::VisionSourceChannel</code></td><td>Channel identifier.</td></tr>
+                  <tr><td><code>m_name</code></td><td><code>std::string</code></td><td>Human-readable name of the source.</td></tr>
+                  <tr><td><code>m_path</code></td><td><code>std::string</code></td><td>System path to the source.</td></tr>
+                  <tr><td><code>m_local_address</code></td><td><code>std::string</code></td><td>Local network address.</td></tr>
+                  <tr><td><code>m_remote_address</code></td><td><code>std::string</code></td><td>Remote network address (if applicable).</td></tr>
+                  <tr><td><code>m_width</code></td><td><code>uint32_t</code></td><td>Video stream width.</td></tr>
+                  <tr><td><code>m_height</code></td><td><code>uint32_t</code></td><td>Video stream height.</td></tr>
+                  <tr><td><code>m_fps</code></td><td><code>uint32_t</code></td><td>Frames per second.</td></tr>
+                  <tr><td><code>m_format</code></td><td><code>common::VideoFormat</code></td><td>Video format.</td></tr>
+                  <tr><td><code>m_serial</code></td><td><code>std::string</code></td><td>Device serial number.</td></tr>
+                  <tr><td><code>m_layout</code></td><td><code>common::FrameLayout</code></td><td>Frame layout configuration.</td></tr>
+                  <tr><td><code>m_path_type</code></td><td><code>common::DevicePathType</code></td><td>Type of device path.</td></tr>
+                  <tr><td><code>m_packet_size</code></td><td><code>size_t</code></td><td>Size of data packets.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-motiondatainfo" class="data-type-card">
+            <h5>MotionDataInfo</h5>
+            <p class="data-type-desc">Represents detailed information about a motion data provider.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_name</code></td><td><code>std::string</code></td><td>Name of the motion data provider.</td></tr>
+                  <tr><td><code>m_type</code></td><td><code>common::MotionDataProviderType</code></td><td>Type of the motion data provider.</td></tr>
+                  <tr><td><code>m_alias</code></td><td><code>common::MotionDataProviderType</code></td><td>Alias type for the provider.</td></tr>
+                  <tr><td><code>m_path</code></td><td><code>std::string</code></td><td>System file path to the device.</td></tr>
+                  <tr><td><code>m_serial</code></td><td><code>std::string</code></td><td>Serial number of the device.</td></tr>
+                  <tr><td><code>m_baudrate</code></td><td><code>int32_t</code></td><td>Baud rate for serial communication.</td></tr>
+                  <tr><td><code>m_stream</code></td><td><code>std::string</code></td><td>Associated stream identifier.</td></tr>
+                  <tr><td><code>m_transform_matrix_acc</code></td><td><code>std::vector&lt;double&gt;</code></td><td>Transformation matrix for accelerometer data.</td></tr>
+                  <tr><td><code>m_transform_matrix_ang</code></td><td><code>std::vector&lt;double&gt;</code></td><td>Transformation matrix for angular data.</td></tr>
+                  <tr><td><code>m_transform_matrix_mag</code></td><td><code>std::vector&lt;double&gt;</code></td><td>Transformation matrix for magnetometer data.</td></tr>
+                  <tr><td><code>m_pid</code></td><td><code>int32_t</code></td><td>Product ID of the device.</td></tr>
+                  <tr><td><code>m_vid</code></td><td><code>int32_t</code></td><td>Vendor ID of the device.</td></tr>
+                  <tr><td><code>m_interface</code></td><td><code>std::string</code></td><td>Interface type description.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-directiondata" class="data-type-card">
+            <h5>DirectionData</h5>
+            <p class="data-type-desc">Represents directional data including heading degree and speed. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_direction_degree</code></td><td><code>int32_t</code></td><td>The direction in degrees (0-360).</td></tr>
+                  <tr><td><code>m_speed_km_h</code></td><td><code>int32_t</code></td><td>The speed in kilometers per hour.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-fpsdata" class="data-type-card">
+            <h5>FpsData</h5>
+            <p class="data-type-desc">Represents Frames-Per-Second (FPS) performance data. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_fps</code></td><td><code>int32_t</code></td><td>The current FPS value.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-autocalibmatrices" class="data-type-card">
+            <h5>AutoCalibMatricesData</h5>
+            <p class="data-type-desc">Represents auto-calibration matrices data. Inherits from <code>CommonData</code>.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_rotation</code></td><td><code>std::vector&lt;std::vector&lt;double&gt;&gt;</code></td><td>The rotation matrix data resulting from calibration.</td></tr>
+                  <tr><td><code>m_start_frame</code></td><td><code>uint64_t</code></td><td>The frame number where the calibration process started.</td></tr>
+                  <tr><td><code>m_start_timestamp</code></td><td><code>struct timeval</code></td><td>The timestamp corresponding to the start of the calibration.</td></tr>
+                  <tr><td><code>m_score</code></td><td><code>float</code></td><td>The calculated score indicating the quality/confidence of the calibration.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-statistics" class="data-type-card">
+            <h5>Statistics</h5>
+            <p class="data-type-desc">Aggregates statistics for an entire stream, which is composed of multiple modules.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_stream_name</code></td><td><code>std::string</code></td><td>The name of the stream these statistics belong to.</td></tr>
+                  <tr><td><code>m_module_stats</code></td><td><code>std::vector&lt;ModuleStatistics&gt;</code></td><td>A collection of statistics for each module within the stream.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-modulestatistics" class="data-type-card">
+            <h5>ModuleStatistics</h5>
+            <p class="data-type-desc">Holds detailed performance and statistical data for a single processing module.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_module_name</code></td><td><code>std::string</code></td><td>The name of the module.</td></tr>
+                  <tr><td><code>m_min_time</code></td><td><code>std::chrono::microseconds</code></td><td>The minimum total processing time for a frame.</td></tr>
+                  <tr><td><code>m_max_time</code></td><td><code>std::chrono::microseconds</code></td><td>The maximum total processing time for a frame.</td></tr>
+                  <tr><td><code>m_avg_time</code></td><td><code>std::chrono::microseconds</code></td><td>The average total processing time for a frame.</td></tr>
+                  <tr><td><code>m_netto_min_time</code></td><td><code>std::chrono::microseconds</code></td><td>The minimum "netto" processing time (excluding framework/IO overhead).</td></tr>
+                  <tr><td><code>m_netto_max_time</code></td><td><code>std::chrono::microseconds</code></td><td>The maximum "netto" processing time.</td></tr>
+                  <tr><td><code>m_netto_avg_time</code></td><td><code>std::chrono::microseconds</code></td><td>The average "netto" processing time.</td></tr>
+                  <tr><td><code>m_min_latency</code></td><td><code>std::chrono::microseconds</code></td><td>The minimum observed latency.</td></tr>
+                  <tr><td><code>m_max_latency</code></td><td><code>std::chrono::microseconds</code></td><td>The maximum observed latency.</td></tr>
+                  <tr><td><code>m_avg_latency</code></td><td><code>std::chrono::microseconds</code></td><td>The average observed latency.</td></tr>
+                  <tr><td><code>m_skipped_frames</code></td><td><code>int32_t</code></td><td>The total number of frames skipped by this module.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-ffcstatus" class="data-type-card">
+            <h5>FfcStatus</h5>
+            <p class="data-type-desc">Represents the Flat-Field Correction (FFC) status for a camera stream.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_stream_name</code></td><td><code>std::string</code></td><td>The name of the camera stream.</td></tr>
+                  <tr><td><code>m_ffc_primary</code></td><td><code>FfcStatusValue</code></td><td>The FFC status value of the primary camera.</td></tr>
+                  <tr><td><code>m_ffc_secondary</code></td><td><code>FfcStatusValue</code></td><td>The FFC status value of the secondary camera.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-disparitystatus" class="data-type-card">
+            <h5>DisparityStatus</h5>
+            <p class="data-type-desc">Represents the status and quality of a disparity stream.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_stream_name</code></td><td><code>std::string</code></td><td>The name of the disparity stream.</td></tr>
+                  <tr><td><code>m_score</code></td><td><code>float</code></td><td>The quality score of the disparity map.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-autocalibstatus" class="data-type-card">
+            <h5>AutoCalibStatus</h5>
+            <p class="data-type-desc">Represents the status and state of the auto-calibration process.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_stream_name</code></td><td><code>std::string</code></td><td>The name of the stream associated with the calibration.</td></tr>
+                  <tr><td><code>m_score</code></td><td><code>float</code></td><td>The current score of the auto-calibration process.</td></tr>
+                  <tr><td><code>m_state</code></td><td><code>CalibrationState</code></td><td>The current operational state of the auto-calibration.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dt-inputstatus" class="data-type-card">
+            <h5>InputStatus</h5>
+            <p class="data-type-desc">Represents the status and error states of the input sensors.</p>
+            <div class="table-wrapper">
+              <table class="doc-table compact">
+                <thead>
+                  <tr><th>Member</th><th>Data Type</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>m_stream_name</code></td><td><code>std::string</code></td><td>The name of the stream.</td></tr>
+                  <tr><td><code>m_input_primary</code></td><td><code>foresight::FsCommonErrors</code></td><td>Error code/status for the primary input.</td></tr>
+                  <tr><td><code>m_input_secondary</code></td><td><code>foresight::FsCommonErrors</code></td><td>Error code/status for the secondary input.</td></tr>
+                  <tr><td><code>m_input_primary_msg</code></td><td><code>std::string</code></td><td>Descriptive message for the primary input status.</td></tr>
+                  <tr><td><code>m_input_secondary_msg</code></td><td><code>std::string</code></td><td>Descriptive message for the secondary input status.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h4 id="enumerations">2.1.3 Enumerations</h4>
+
+          <h5>MsgType</h5>
+          <p><strong>Description:</strong> Defines the specific type of message payload being transmitted within the SDK.</p>
+          <div id="enum-msgtype" class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">MsgType Enumeration</span>
+            </div>
+            <pre><code class="language-cpp">enum class MsgType : uint32_t
+{
+    INVALID                         = 0,
+    CAMERA_FRAME_PRIMARY            = 1024, // Left Image
+    CAMERA_FRAME_SECONDARY          = 1025, // Right Image
+    OBJ_TRACKER_CLASSIFIER          = 1031, // tracked detector obstacles
+    IMAGE_DRIVABLE_AREA             = 1032, // drivable area mask
+    EGO_CAR_DATA                    = 1035, // Ego car data
+    DEPTH_PCL                       = 1037, // Depth Map
+    FPS                             = 1045, // Average FPS
+    OBJ_TRACKER_AOD                 = 1051, // nearest obstacle after tracker and merge
+    FILTERED_PCL                    = 1053, // filtered point cloud
+    VIO_R_T_MATRIX                  = 1079, // vio rotation and translation matrix
+    RAIL_PATH_MASK                  = 1083, // Rail path mask
+    EDGE_DETECTION                  = 1084, // Edge detection mask
+};</code></pre>
+          </div>
+
+          <h5>ImageFormat</h5>
+          <p><strong>Description:</strong> Enumerates the supported pixel formats for image data buffers.</p>
+          <div id="enum-imageformat" class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">ImageFormat Enumeration</span>
+            </div>
+            <pre><code class="language-cpp">enum class ImageFormat : uint32_t
+{
+    RGB,
+    RGBA,
+    BGR,
+    BGRA,
+    I420,
+    NV12,
+    NV21,
+    YUY2,
+    YUV422P,
+    YUV444P,
+    UYVY,
+    GRAY8,
+    GRAY16_LE,
+    F32_1,
+    XYZ,
+    NUM_OF,
+};</code></pre>
+          </div>
+
+          <h5>VisionSourceChannel</h5>
+          <p><strong>Description:</strong> Specifies the spectral channel type of the vision source.</p>
+          <div id="enum-visionsourcechannel" class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">VisionSourceChannel Enumeration</span>
+            </div>
+            <pre><code class="language-cpp">enum class VisionSourceChannel : std::uint8_t
+{
+    UNDEFINED = 0,
+    VIS,    // Visible light
+    IR,     // Infrared
+};</code></pre>
+          </div>
+
+          <h5>FfcStatusValue</h5>
+          <p><strong>Description:</strong> Represents the current state of the Flat-Field Correction (FFC) process for a camera.</p>
+          <div id="enum-ffcstatusvalue" class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">FfcStatusValue Enumeration</span>
+            </div>
+            <pre><code class="language-cpp">enum class FfcStatusValue : uint32_t
+{
+    NO_NEED = 0,
+    NEED_FFC,
+    REQUESTED,
+    COMPLETED
+};</code></pre>
+          </div>
+
+          <h5>OpenMode</h5>
+          <p><strong>Description:</strong> Defines the operational mode in which the system opened.</p>
+          <div id="enum-openmode" class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">OpenMode Enumeration</span>
+            </div>
+            <pre><code class="language-cpp">enum class OpenMode : std::uint8_t
+{
+    UNDEFINED,
+    ALGO,
+    RECORD,
+    PLAYBACK,
+};</code></pre>
+          </div>
+        </div>
+
+        <div id="callbacks" class="doc-subsection">
+          <h3>2.2 Callbacks</h3>
+          
+          <h4 id="callbacks-overview">2.2.1 Overview</h4>
+          <p>The Foresight SDK Receiver is structured around two core components: <strong>Callbacks</strong> and <strong>Sender</strong>.</p>
+          <p>The Callbacks component is responsible for handling real-time data received from the Foresight service.</p>
+          <p>The SDK provides a set of predefined callback interfaces that developers must override to process incoming data. This design allows flexible, application-specific handling of various data types, such as object detection results and frame metadata.</p>
+          <p>All user-defined data structures and types needed to implement these callbacks are provided in the header files located at:</p>
+          
+          <div class="code-block">
+            <pre><code>/opt/foresight/include/foresight/sdk</code></pre>
+          </div>
+
+          <h4 id="callbacks-definition">2.2.2 Callbacks Definition</h4>
+          <p>Callbacks in the Foresight SDK are defined as virtual functions within specific interface classes. Developers are expected to inherit from these interfaces and override the relevant callback methods to handle incoming data according to their application's needs.</p>
+          <p>Each callback corresponds to a specific data type or event, such as object detection or frame-level metadata. When new data is received from the Foresight service, the SDK automatically invokes the appropriate callback function, passing the relevant data structures as arguments.</p>
+          <p>This architecture enables seamless integration of the SDK's data stream into user applications, supporting customized data processing and real-time responsiveness.</p>
+          <p>Below is a list of all available callbacks:</p>
+          
+          <p>The Callbacks class is organized into three categories:</p>
+          <ul>
+            <li id="cb-vision-service"><strong>Vision Service Callbacks</strong> — Handle core vision processing events: logging, termination, frame numbers, motion data, metadata paths, and heartbeat signals.</li>
+            <li id="cb-platform-service"><strong>Platform Service Callbacks</strong> — Handle platform-level events: logging and heartbeat signals from the Platform Service.</li>
+            <li id="cb-rgui"><strong>RGUI Callbacks</strong> — Handle real-time output data: images, point clouds, masks, transforms, VIO, edge detection, obstacles, statistics, calibration status, and more.</li>
+          </ul>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Callbacks Interface Class (Complete)</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @class Callbacks
+ * @brief Interface for handling various callbacks from Vision Service, 
+ *        Platform Service, and RGUI.
+ */
+class Callbacks
+{
+public:
+    // ==========================================
+    // Calls from Vision Service
+    // ==========================================
+
+    /**
+     * @brief Logs a message from the Vision Service.
+     * @param message The log message from the Vision Service.
+     */
+    virtual void logVisionService(const std::string& message);
+
+    /**
+     * @brief Called when the Vision Service is terminated.
+     */
+    virtual void visionServiceTerminated();
+
+    /**
+     * @brief Provides the current frame number from the Vision Service.
+     * @param frame_number The current frame number.
+     */
+    virtual void frameNumber(uint64_t frame_number);
+
+    /**
+     * @brief Notifies about disconnected motion data.
+     * @param name The name of the motion data provider.
+     * @param motion_data_type The type of the motion data provider.
+     */
+    virtual void disconnectedMotionData(const std::string& name,
+        common::MotionDataProviderType motion_data_type);
+
+    /**
+     * @brief Provides metadata paths from the Vision Service.
+     * @param md_paths A map containing metadata paths with their corresponding keys.
+     */
+    virtual void metadataPaths(const std::map&lt;std::string, std::string&gt;& md_paths);
+
+    /**
+     * @brief Heartbeat signal from the Vision Service.
+     */
+    virtual void heartBeatVs();
+
+    // ==========================================
+    // Calls from Platform Service
+    // ==========================================
+
+    /**
+     * @brief Logs a message from the Platform Service.
+     * @param message The log message from the Platform Service.
+     */
+    virtual void logPlatformService(const std::string& message);
+
+    /**
+     * @brief Heartbeat signal from the Platform Service.
+     * @param argument Additional argument for the heartbeat signal.
+     */
+    virtual void heartBeatPs(const std::string& argument);
+
+    // ==========================================
+    // RGUI Callbacks
+    // ==========================================
+
+    /**
+     * @brief Provides image data.
+     * @param data The image data.
+     */
+    virtual void image(const MatrixData& data);
+
+    /**
+     * @brief Provides point cloud data.
+     * @param data The point cloud data.
+     */
+    virtual void pcl(const MatrixData& data);
+
+    /**
+     * @brief Provides mask image data.
+     * @param data The mask image data.
+     */
+    virtual void maskImage(const MatrixData& data);
+
+    /**
+     * @brief Provides transformed matrix data.
+     * @param data The transformed matrix data.
+     */
+    virtual void transformMatrix(const MatrixData& data);
+
+    /**
+     * @brief Provides visual-inertial odometry data.
+     * @param data The visual-inertial odometry data.
+     */
+    virtual void vio(const VisualInertialOdometryData& data);
+
+    /**
+     * @brief Provides edge detection data.
+     * @param data The edge detection data.
+     */
+    virtual void edgeDetection(const EdgeDetectionData& data);
+
+    /**
+     * @brief Provides module statistics.
+     * @param statistics The module statistics.
+     */
+    virtual void moduleStatistics(const Statistics& statistics);
+
+    /**
+     * @brief Provides disparity status.
+     * @param disparity_status The disparity status.
+     */
+    virtual void disparityStatus(const DisparityStatus& disparity_status);
+
+    /**
+     * @brief Provides auto-calibration status.
+     * @param auto_calib_status The auto-calibration status.
+     */
+    virtual void autocalibStatus(const AutoCalibStatus& auto_calib_status);
+
+    /**
+     * @brief Provides flat-field correction (FFC) status.
+     * @param ffc_status The FFC status.
+     */
+    virtual void ffcStatus(const FfcStatus& ffc_status);
+
+    /**
+     * @brief Provides input status.
+     * @param status The input status.
+     */
+    virtual void inputStatus(const InputStatus& status);
+
+    /**
+     * @brief Provides obstacle data from the RGUI.
+     * @param data The obstacle data.
+     */
+    virtual void obstacles(const ObstaclesData& data);
+
+    /**
+     * @brief Provides frames-per-second (FPS) data from the RGUI.
+     * @param data The FPS data.
+     */
+    virtual void fps(const FpsData& data);
+
+    /**
+     * @brief Provides direction data from the RGUI.
+     * @param data The direction data.
+     */
+    virtual void direction(const DirectionData& data);
+
+    /**
+     * @brief Provides auto-calibration matrices data from the RGUI.
+     * @param data The auto-calibration matrices data.
+     */
+    virtual void autocalibMatrices(const AutoCalibMatricesData& data);
+
+    // ==========================================
+    // Data Request Configuration
+    // ==========================================
+
+    /**
+     * @brief Get the Request Data object
+     * @return std::map&lt;std::string, foresight::BitMsgType&gt;
+     */
+    virtual std::map&lt;std::string, foresight::BitMsgType&gt; getRequestData() = 0;
+};</code></pre>
+          </div>
+
+          <h4 id="data-request">2.2.3 Data Request</h4>
+          <p>The following callback manages the configuration of the data request process:</p>
+          
+          <div class="code-block">
+            <pre><code class="language-cpp">virtual std::map&lt;std::string, foresight::BitMsgType&gt; getRequestData() = 0;</code></pre>
+          </div>
+
+          <p>The function must return a mapping of stream names for each data request of type <code>BitMsgType</code>.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Example: Data Request Configuration</span>
+            </div>
+            <pre><code class="language-cpp">std::map&lt;std::string, foresight::BitMsgType&gt; getRequestData() override
+{
+    std::map&lt;std::string, foresight::BitMsgType&gt; request_data;
+    request_data["front_vis"] = foresight::BitMsgType::CAMERA_FRAME_PRIMARY |
+                                foresight::BitMsgType::CAMERA_FRAME_SECONDARY |
+                                foresight::BitMsgType::OBJ_TRACKER_CLASSIFIER;
+    request_data["front_ir"] =  foresight::BitMsgType::CAMERA_FRAME_PRIMARY |
+                                foresight::BitMsgType::CAMERA_FRAME_SECONDARY |
+                                foresight::BitMsgType::OBJ_TRACKER_CLASSIFIER;
+    return request_data;
+}</code></pre>
+          </div>
+          <p>The Sender object uses the callback mapping to deliver the requested data to the client. Once the Sender object is initialized, this mapping cannot be modified.</p>
+
+          <h4 id="buffer-parsing">2.2.4 Buffer Data Parsing</h4>
+          <p>The callback function holds references to the parsed data.</p>
+          <p><code>VisualInertialOdometryData</code>, <code>EdgeDetectionData</code>, <code>ObstaclesData</code> and etc…</p>
+          <p><strong>MatrixData</strong><br/>
+          MatrixData containing a pointer to a memory buffer. <code>getBuffer()</code> function retrieves the pointer to the data.<br/>
+          The section below explains how to treat buffered data.</p>
+
+          <h5 id="parse-image">Image Buffer: Primary Image, Secondary Image</h5>
+          <p><strong>BitMsgTypes</strong>: <code>CAMERA_FRAME_PRIMARY</code>, <code>CAMERA_FRAME_SECONDARY</code></p>
+          <p>The image buffer is a one-dimensional array with a size calculated as <code>m_length = m_width × m_height × bytes_per_pixel</code>. The bytes per pixel size can be calculated from the <a href="#bpp">bits per pixel (BPP) table</a> at the end of this document.</p>
+          <p>Different system modes can send different formats:</p>
+          
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Mode</th><th>Stream Type</th><th>Format</th><th>Bytes per Pixel</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Algo</td><td>VIS</td><td>RGB (interleaved)</td><td>3</td></tr>
+                <tr><td>Algo</td><td>IR</td><td>Gray8</td><td>1</td></tr>
+                <tr><td>Record</td><td>VIS</td><td>YUV422P (planar)</td><td>2</td></tr>
+                <tr><td>Record</td><td>IR</td><td>Gray8</td><td>1</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Each value is stored as a <code>uint8_t</code>.</p>
+          <p><strong>Example:</strong><br/>
+          VIS image of <code>RGB</code> format will appear as follows:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Image Buffer Parsing (RGB)</span>
+            </div>
+            <pre><code class="language-cpp">pixel0.r = m_buffer[0]
+pixel0.g = m_buffer[1]
+pixel0.b = m_buffer[2]
+pixel1.r = m_buffer[3]
+...
+
+for (int row = 0; row &lt; height; ++row) {
+    for (int col = 0; col &lt; width; ++col) {
+        // Calculate the starting index for this pixel
+        size_t pixelIndex = (row * width + col) * channels;
+
+        for (int k = 0; k &lt; channels; ++k) {
+            uint8_t pixelValue = buffer[pixelIndex + k];
+        }
+    }
+}</code></pre>
+          </div>
+
+          <h5 id="parse-pcl">Point Cloud Buffer: Filtered PCL (Point Cloud)</h5>
+          <p><strong>BitMsgTypes</strong>: <code>FILTERED_PCL</code></p>
+          <p>PCL buffer: <code>m_length = m_width × m_height × 3</code> (X Y Z for every pixel). Each value is stored as a <code>float32</code>.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Point Cloud Buffer Parsing</span>
+            </div>
+            <pre><code class="language-cpp">for (int row = 0; row &lt; height; ++row) {
+    for (int col = 0; col &lt; width; ++col) {
+        size_t pixelIndex = (row * width + col) * channels;
+
+        for (int k = 0; k &lt; channels; ++k) {
+            float pixelValue = buffer[pixelIndex + k];
+        }
+    }
+}</code></pre>
+          </div>
+
+          <h5 id="parse-depth">Depth Map Buffer</h5>
+          <p><strong>BitMsgTypes</strong>: <code>DEPTH_PCL</code></p>
+          <p>Depth PCL buffer: <code>m_length = m_width × m_height</code>. Every pixel is of <code>float32</code> size.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Depth Map Buffer Parsing</span>
+            </div>
+            <pre><code class="language-cpp">for (int row = 0; row &lt; height; ++row) {
+    for (int col = 0; col &lt; width; ++col) {
+        size_t pixelIndex = (row * width + col);
+        float pixelValue = buffer[pixelIndex];
+    }
+}</code></pre>
+          </div>
+
+          <h5 id="parse-mask">Mask Image Buffer: Drivable Area, Rail Path Mask</h5>
+          <p><strong>BitMsgTypes</strong>: <code>DRIVABLE_AREA</code>, <code>RAIL_PATH_MASK</code></p>
+          <p>Mask image buffer: <code>m_length = m_width × m_height</code>. Every pixel is of <code>uint8_t</code> size.</p>
+          <p>Values: <code>0</code> = ignored area, <code>255</code> = active area</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Mask Image Buffer Parsing</span>
+            </div>
+            <pre><code class="language-cpp">for (int row = 0; row &lt; height; ++row) {
+    for (int col = 0; col &lt; width; ++col) {
+        size_t pixelIndex = (row * width + col);
+        uint8_t maskValue = buffer[pixelIndex];
+        
+        if (maskValue == 255) {
+            // Active area (drivable / rail path)
+        } else {
+            // Ignored area
+        }
+    }
+}</code></pre>
+          </div>
+
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="callout-content">
+              <h4>Buffer Size Calculation</h4>
+              <p>The image buffer is a one-dimensional array with size: <code>m_length = m_width × m_height × bytes_per_pixel</code></p>
+              <p>The bytes per pixel can be calculated from the <a href="#bpp">Bits per pixel (BPP) table:</a> <code>bytes_per_pixel = bpp / 8</code></p>
+            </div>
+          </div>
+        </div>
+
+        <div id="sender-interface" class="doc-subsection">
+          <h3>2.3 Client—Foresight Service Communication</h3>
+          <p>While the Callbacks component handles incoming data from the Foresight service, the <strong>Sender</strong> component is responsible for sending requests to the FS service.</p>
+          <p>The Sender interface allows applications to initiate various actions, such as:</p>
+          <ul class="feature-list">
+            <li>Starting or stopping data streams</li>
+            <li>Requesting specific processing features (e.g., object detection, etc.)</li>
+            <li>Sending control commands or configuration updates</li>
+          </ul>
+          <p>This enables dynamic, real-time interaction with the Foresight system, allowing developers to tailor the SDK's behavior to specific application requirements.</p>
+          <p>Below is the full interface of the <strong>Sender</strong> class:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Sender Class Interface</span>
+            </div>
+            <pre><code class="language-cpp">class Sender
+{
+public:
+    /**
+     * @brief Creates an instance of the Sender class.
+     * @param callbacks Optional callbacks for handling events.
+     * @param service_host The service host IP address. Defaults to 127.0.0.1.
+     * @param client_host The client host IP address. Defaults to 127.0.0.1.
+     * @param receive_rgui_udp Whether to receive RGUI UDP messages. Defaults to true.
+     * @return A pointer to the created Sender instance.
+     */
+    static Sender* CreateInstance(
+        Callbacks*         callbacks        = nullptr,
+        const std::string&amp; service_host     = DEFAULT_HOST,
+        const std::string&amp; client_host      = DEFAULT_HOST,
+        bool               receive_rgui_udp = true);
+
+    virtual ~Sender() = default;
+
+    // Control playback
+
+    /**
+     * @brief Starts playback of recorded data.
+     * @param playback_folder The folder containing playback data.
+     * @param request_data The type of data to request from the cameras for each stream.
+     *   "*" means all streams, Defaults to primary and secondary camera frames.
+     * @param metadata Metadata flags to include. Defaults to no metadata.
+     */
+    virtual void startPlayback(
+        const std::string&amp; playback_folder,
+        MetadataFlag       metadata = MetadataFlag::NO_METADATA) = 0;
+
+    /**
+     * @brief Retrieves a list of available playback directories.
+     * @return A vector of playback directory names.
+     */
+    virtual std::vector&lt;std::string&gt; getPlaybackDirList() = 0;
+
+    /**
+     * @brief Sets the root directory of playback path.
+     * The path can contain multiple playback folders.
+     * @param playback_path The root directory of playback path.
+     */
+    virtual void setPlaybackPath(const std::string&amp; playback_path) = 0;
+
+    /**
+     * @brief Gets the current playback path.
+     * @return The playback path as a string.
+     */
+    virtual std::string getPlaybackPath() = 0;
+
+    /**
+     * @brief Starts playback.
+     */
+    virtual void runPlayback() = 0;
+
+    /**
+     * @brief Pauses playback.
+     */
+    virtual void pausePlayback() = 0;
+
+    /**
+     * @brief Stops playback.
+     */
+    virtual void stopPlayback() = 0;
+
+    /**
+     * @brief Starts the Flat Field Correction (FFC) process.
+     */
+    virtual void startFfc() = 0;
+
+    // Control record
+
+    /**
+     * @brief Starts recording with the specified stream configuration.
+     * @param info The stream configuration for recording.
+     */
+    virtual void startRecord(const StreamInfoConfig&amp; info) = 0;
+
+    /**
+     * @brief Sets the path for recording data.
+     * @param record_path The path to the recording folder.
+     */
+    virtual void setRecordPath(const std::string&amp; record_path) = 0;
+
+    /**
+     * @brief Gets the current recording path.
+     * @return The recording path as a string.
+     */
+    virtual std::string getRecordPath() = 0;
+
+    /**
+     * @brief Starts recording from the camera.
+     */
+    virtual void startRecordCamera() = 0;
+
+    /**
+     * @brief Stops recording from the camera.
+     */
+    virtual void stopRecordCamera() = 0;
+
+    // Control cameras
+
+    /**
+     * @brief Starts the cameras with the specified configuration.
+     * @param info The stream configuration for the cameras.
+     * @param open_mode The mode to open the cameras in. Defaults to ALGO mode.
+     * @param request_data The type of data to request from the cameras.
+     *                     "*" means all streams. Defaults to primary and secondary camera frames.
+     */
+    virtual void startCameras(
+        const StreamInfoConfig&amp; info,
+        common::OpenMode        open_mode = common::OpenMode::ALGO) = 0;
+
+    /**
+     * @brief Retrieves all connected cameras.
+     * @return A vector of VisionSource objects representing the connected cameras.
+     */
+    virtual std::vector&lt;VisionSource&gt; getAllConnectedCameras() = 0;
+
+    /**
+     * @brief Retrieves all connected motion data sources.
+     * @return A vector of MotionDataInfo objects representing the connected motion data sources.
+     */
+    virtual std::vector&lt;MotionDataInfo&gt; getAllConnectedMotionData() = 0;
+
+    // Others
+
+    /**
+     * @brief Sets the client IP address.
+     * @param client_ip The client IP address.
+     */
+    virtual void setClientIP(const std::string&amp; client_ip) = 0;
+
+    /**
+     * @brief Gets the current client IP address.
+     * @return The client IP address as a string.
+     */
+    virtual std::string getClientIP() = 0;
+
+    /**
+     * @brief Stops the vision service.
+     */
+    virtual void stopVisionService() = 0;
+
+    /**
+     * @brief Gets the build version of the SDK.
+     * @return The build version as a string.
+     */
+    virtual std::string getBuildVersion() = 0;
+
+    /**
+     * @brief Retrieves information about all streams, including non-configured and non-used streams.
+     * @return A vector of StreamInfo objects representing all streams.
+     */
+    virtual std::vector&lt;StreamInfo&gt; getAllStreamsInfo() = 0;
+};</code></pre>
+          </div>
+        </div>
+
+        <div id="workflow" class="doc-subsection">
+          <h3>2.4 Receiver Common Workflow</h3>
+          <p>The Foresight SDK Receiver follows a structured workflow:</p>
+
+          <div class="workflow-grid">
+            <div class="workflow-step">
+              <div class="step-number">1</div>
+              <h4>Initialization</h4>
+              <ul>
+                <li>Parse command-line arguments</li>
+                <li>Set up the output directory</li>
+                <li>Initialize callback handlers</li>
+                <li>Create SDK Sender instance</li>
+                <li>Validate connections</li>
+              </ul>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">2</div>
+              <h4>Configuration</h4>
+              <ul>
+                <li>Set up stream configurations</li>
+                <li>Configure data requests</li>
+                <li>Initialize processing resources</li>
+              </ul>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">3</div>
+              <h4>Execution</h4>
+              <ul>
+                <li>Start camera input/playback/recording</li>
+                <li>Begin data processing via callbacks</li>
+                <li>Monitor system status</li>
+                <li>Handle termination signals</li>
+              </ul>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">4</div>
+              <h4>Cleanup</h4>
+              <ul>
+                <li>Stop active services</li>
+                <li>Release allocated resources</li>
+                <li>Save/export final output data</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="examples" class="doc-subsection">
+          <h3>2.5 SDK Example Applications</h3>
+
+          <div class="callout callout-warning">
+            <div class="callout-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="callout-content">
+              <h4>Disclaimer</h4>
+              <p>By using these examples, you acknowledge that they are provided "as-is" without warranties or guarantees of completeness or fitness for a specific purpose. The example code is not optimized for deployment or real-time performance.</p>
+            </div>
+          </div>
+
+          <h4 id="examples-overview">2.5.1 Overview</h4>
+          <p>The Foresight SDK Receiver provides example applications, each demonstrating different functionalities and use cases.<br><br>Foresight offers both basic and advanced examples. The basic examples include hard-coded configurations, while the advanced example can accept command-line arguments for external configuration.</p>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Example</th><th>Example Files (under <code>/opt/foresight/examples</code>)</th><th>Definition</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Playback Mode</strong></td><td><code>basic_algo_example</code> <code>advanced_algo_example</code></td><td>Demonstrates how to play back recorded data using the SDK.</td></tr>
+                <tr><td><strong>Algo Mode</strong></td><td><code>basic_playback_example</code> <code>advanced_playback_example</code></td><td>Demonstrates how to connect to the Foresight service and run ALGO mode for real-time vision processing.</td></tr>
+                <tr><td><strong>Record Mode</strong></td><td><code>basic_record_example</code> <code>advanced_record_example</code></td><td>Demonstrates how to connect to the Foresight service and run RECORD mode for capturing data.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 id="common-features">2.5.2 Common Features</h4>
+          <p>All example applications share the following common functionalities:</p>
+          <ul class="feature-list">
+            <li>Host IP configuration</li>
+            <li>Command-line argument parsing</li>
+            <li>SDK connection management</li>
+            <li>Output directory creation and management</li>
+          </ul>
+
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="callout-content">
+              <p>When working with cameras, the first VIS (Visible) source is paired with the first VIS stream, and the second VIS source is paired with the second VIS stream.
+                  The same pairing logic applies to IR (Infrared) sources and streams. <br><br>
+                  The implemented callbacks in these examples store received data into binary files. These files are written to the client-side fs_data folder for further processing or analysis.
+              </p>
+            </div>
+          </div>
+
+          <h4 id="sdk-examples">2.5.3 SDK Examples</h4>
+
+          <h5 id="playback-mode">2.5.3.1 Playback Mode</h5>
+          
+          <h6>Purpose</h6>
+          <p>Demonstrates how to play back recorded data using the Foresight SDK.</p>
+
+          <h6>Usage</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Usage</span>
+            </div>
+            <pre><code class="language-bash">./advanced_playback_example [-pp &lt;playback_videos_folder_path&gt;] [-o &lt;foresight_data_output_path&gt;] [-t &lt;host_ip&gt;] [-s &lt;stream:bitmask&gt;]</code></pre>
+          </div>
+
+          <h6>Options</h6>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Option</th><th>Description</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>-pp &lt;playback_videos_folder_path&gt;</code></td><td>Path to the recorded video folders on the server side</td><td><code>/mnt/foresight_videos</code></td></tr>
+                <tr><td><code>-o &lt;foresight_data_output_path&gt;</code></td><td>Path to save the output data. A folder named <code>fs_data</code> will be created on the client side.</td><td><code>/tmp</code></td></tr>
+                <tr><td><code>-t &lt;host_ip&gt;</code></td><td>IP address of the Foresight host</td><td><code>127.0.0.1</code></td></tr>
+                <tr><td><code>-s &lt;stream:bitmask&gt;</code></td><td>Defines which streams and data types to request. May be used multiple times.</td><td><code>*:6</code> (all streams with PRIMARY and SECONDARY frames)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Text</span>
+              <span class="code-title">Stream Specification Format</span>
+            </div>
+            <pre><code>Stream specification format: -s "stream_name:numeric_bitmask"
+
+Examples:
+  -s *:6                # All streams with PRIMARY|SECONDARY frames (2|4=6)
+  -s front_vis:518      # Specific stream with PRIMARY|SECONDARY|PCL (2|4|512=518)
+  -s stream1:6 -s stream2:32  # Multiple streams with different data types
+
+Common BitMsgType values:
+  CAMERA_FRAME_PRIMARY=2, CAMERA_FRAME_SECONDARY=4, PCL=512, OBJ_TRACKER_CLASSIFIER=32
+
+If no -s specified, defaults to all streams with comprehensive data types.</code></pre>
+          </div>
+
+          <h6>Features</h6>
+          <ul class="feature-list">
+            <li>Automatic discovery of playback directories</li>
+            <li>Interactive selection when multiple playback options are available</li>
+            <li>Playback control and real-time monitoring</li>
+            <li>Data extraction during playback</li>
+            <li>Customizable data requests per stream</li>
+          </ul>
+
+          <h6>Example</h6>
+          <p>Run the following commands:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Help Command</span>
+            </div>
+            <pre><code class="language-bash">cd /opt/foresight
+./bin/advanced_playback_example -h</code></pre>
+          </div>
+
+          <p>This will print a help message with usage instructions.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Help Output</span>
+            </div>
+            <pre><code>./advanced_playback_example -h
+Usage: ./advanced_playback_example [-pp &lt;playback_videos_folder_path&gt;] [-o &lt;foresight_data_output_path&gt;] [-t &lt;host_ip&gt;] [-s &lt;stream:bitmask&gt;]...
+  -pp &lt;playback_videos_folder_path&gt;  Optional: Path of the video playback folders on the server side, default is "/mnt/foresight_videos"
+  -o &lt;foresight_data_output_path&gt;    Optional: Specify the path to save output data; a new folder, fs_data, will be created on the client side. default is "/tmp"
+  -t &lt;host_ip&gt;                       Optional: Host IP address (default: 127.0.0.1)
+  -s &lt;stream:bitmask&gt;                Optional: Stream and data types that can be requested (may be used multiple times)
+
+Stream specification format: -s "stream_name:numeric_bitmask"
+Examples:
+  -s *:6                      # All streams with PRIMARY|SECONDARY frames (2|4=6)
+  -s front_vis:518            # Specific stream with PRIMARY|SECONDARY|PCL (2|4|512=518)
+  -s stream1:6 -s stream2:32  # Multiple streams with different data types
+
+Common BitMsgType values:
+  CAMERA_FRAME_PRIMARY=2, CAMERA_FRAME_SECONDARY=4, PCL=512, OBJ_TRACKER_CLASSIFIER=32
+
+If no -s specified, defaults to all streams with comprehensive data types.</code></pre>
+          </div>
+
+          <p>To run the example with actual arguments, use:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Example Command</span>
+            </div>
+            <pre><code class="language-bash">./bin/advanced_playback_example -pp /mnt/foresight_videos/ -o /tmp/ -t 10.0.0.118 -s front_vis:2 -s front_ir:4</code></pre>
+          </div>
+
+          <p>This command will:</p>
+          <ul class="feature-list">
+            <li>Use <code>/mnt/foresight_videos/</code> as the source folder for playback</li>
+            <li>Foresight data will be saved to a new directory called <code>fs_data</code>, which will be created inside the specified <code>&lt;foresight_data_output_path&gt;</code> (e.g., <code>/tmp/fs_data</code>).</li>
+            <li>Connect to the Foresight service at <code>10.0.0.118</code></li>
+            <li>Request:
+              <ul>
+                <li>Primary frames from the <code>front_vis</code> stream (<code>bitmask: 2</code>)</li>
+                <li>Secondary frames from the <code>front_ir</code> stream (<code>bitmask: 4</code>)</li>
+              </ul>
+            </li>
+          </ul>
+
+          <p>After launching:</p>
+          <ul class="feature-list">
+            <li>A list of all available videos will be printed on the screen.</li>
+            <li>Enter the number corresponding to the video folder you wish to run.</li>
+            <li>You will then see logs from the Foresight Services as well as output from the executable.</li>
+          </ul>
+
+          <div class="image-gallery">
+            <figure>
+              <img src="playback_mode_1.png" alt="Playback Mode - Directory Selection" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+              <figcaption>Directory selection showing available playback folders</figcaption>
+            </figure>
+            <figure>
+              <img src="playback_mode_2.png" alt="Playback Mode - Execution Logs" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+              <figcaption>Execution logs from Foresight Services</figcaption>
+            </figure>
+            <figure>
+              <img src="playback_mode_3.png" alt="Playback Mode - Output Data" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+              <figcaption>Output data files generated during playback</figcaption>
+            </figure>
+          </div>
+
+          <h5 id="algo-mode">2.5.3.2 Algo Mode</h5>
+          
+          <h6>Purpose</h6>
+          <p>Demonstrates how to use the Foresight SDK for real-time algorithm processing on live camera streams.</p>
+
+          <h6>Usage</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Usage</span>
+            </div>
+            <pre><code class="language-bash">./advanced_algo_example [-o &lt;foresight_data_output_path&gt;] [-d &lt;algo_duration&gt;] [-t &lt;host_ip&gt;] [-s &lt;stream:bitmask&gt;]</code></pre>
+          </div>
+
+          <h6>Options</h6>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Option</th><th>Description</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>-o &lt;foresight_data_output_path&gt;</code></td><td>Path to save output data. A new directory named <code>fs_data</code> will be created inside this path.</td><td><code>/tmp</code></td></tr>
+                <tr><td><code>-d &lt;algo_duration&gt;</code></td><td>Duration of the algorithm run in seconds. Use <code>0</code> to run indefinitely.</td><td><code>0</code></td></tr>
+                <tr><td><code>-t &lt;host_ip&gt;</code></td><td>IP address of the Foresight host.</td><td><code>127.0.0.1</code></td></tr>
+                <tr><td><code>-s &lt;stream:bitmask&gt;</code></td><td>Specifies which streams and data types to request. Can be used multiple times.</td><td><code>*:6</code> (all streams with PRIMARY and SECONDARY frames)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Text</span>
+              <span class="code-title">Stream Specification Format</span>
+            </div>
+            <pre><code>Stream specification format: -s "stream_name:numeric_bitmask"
+
+Examples:
+  -s *:6                # All streams with PRIMARY|SECONDARY frames (2|4=6)
+  -s front_vis:518      # Specific stream with PRIMARY|SECONDARY|PCL (2|4|512=518)
+  -s stream1:6 -s stream2:32  # Multiple streams with different data types
+
+Common BitMsgType values:
+  CAMERA_FRAME_PRIMARY=2, CAMERA_FRAME_SECONDARY=4, PCL=512, OBJ_TRACKER_CLASSIFIER=32
+
+If no -s specified, defaults to all streams with comprehensive data types.</code></pre>
+          </div>
+
+          <h6>Features</h6>
+          <ul class="feature-list">
+            <li>Real-time processing of camera streams</li>
+            <li>Execution of Foresight algorithms with configurable duration</li>
+            <li>Flexible stream selection and configuration</li>
+            <li>On-the-fly data processing in algorithm mode</li>
+          </ul>
+
+          <h6>Example</h6>
+          <p>Run the following commands:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Help Command</span>
+            </div>
+            <pre><code class="language-bash">cd /opt/foresight
+./bin/advanced_algo_example -h</code></pre>
+          </div>
+
+          <p>This will print a help message with usage instructions.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Help Output</span>
+            </div>
+            <pre><code>./advanced_algo_example -h
+Usage: ./advanced_algo_example [-o &lt;foresight_data_output_path&gt;] [-d &lt;algo_duration&gt;] [-t &lt;host_ip&gt;] [-s &lt;stream:bitmask&gt;]...
+  -o &lt;foresight_data_output_path&gt;   Optional: Specify the path to save output data; a new folder, fs_data, will be created on the client side. default is "/tmp"
+  -d &lt;algo_duration&gt;                Optional: Algorithm duration in seconds (0 for indefinite), default is 0
+  -t &lt;host_ip&gt;                      Optional: Host IP address (default: 127.0.0.1)
+  -s &lt;stream:bitmask&gt;               Optional: Stream and data types that can be requested (may be used multiple times)
+
+Stream specification format: -s "stream_name:numeric_bitmask"
+Examples:
+  -s *:6                      # All streams with PRIMARY|SECONDARY frames (2|4=6)
+  -s front_vis:518            # Specific stream with PRIMARY|SECONDARY|PCL (2|4|512=518)
+  -s stream1:6 -s stream2:32  # Multiple streams with different data types
+
+Common BitMsgType values:
+  CAMERA_FRAME_PRIMARY=2, CAMERA_FRAME_SECONDARY=4, OBSTACLES=32, PCL=512
+
+If no -s specified, defaults to all available streams with PRIMARY|SECONDARY frames.</code></pre>
+          </div>
+
+          <p>To run the example with actual arguments, use:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Example Command</span>
+            </div>
+            <pre><code class="language-bash">./bin/advanced_algo_example -o /tmp/ -d 10 -t 10.0.0.118 -s *:38</code></pre>
+          </div>
+
+          <p>This command will:</p>
+          <ul class="feature-list">
+            <li>Start the SDK algorithm mode for 10 seconds.</li>
+            <li>Foresight data will be saved to a new directory called <code>fs_data</code>, which will be created inside the specified <code>&lt;foresight_data_output_path&gt;</code> (e.g., <code>/tmp/fs_data</code>).</li>
+            <li>Connect to the Foresight service running at IP <code>10.0.0.118</code>.</li>
+            <li>Request all streams (<code>*</code>) with the following data types, based on bitmask <code>38</code>:
+              <ul>
+                <li><code>CAMERA_FRAME_PRIMARY</code> (2)</li>
+                <li><code>CAMERA_FRAME_SECONDARY</code> (4)</li>
+                <li><code>OBJ_TRACKER_CLASSIFIER</code> (32)</li>
+              </ul>
+            </li>
+          </ul>
+
+          <p>These features allow real-time processing of camera input with relevant object classification, making it ideal for validating algorithmic outputs in a controlled environment.</p>
+
+          <div class="image-gallery">
+            <figure>
+              <img src="algo_mode_1.png" alt="Algo Mode - Execution Output" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+              <figcaption>Algo mode execution output</figcaption>
+            </figure>
+            <figure>
+              <img src="algo_mode_2.png" alt="Algo Mode - Output Data" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+              <figcaption>Output data files generated during algorithm processing</figcaption>
+            </figure>
+          </div>
+
+          <h5 id="record-mode">2.5.3.3 Record Mode</h5>
+          
+          <h6>Purpose</h6>
+          <p>Demonstrates how to record data from cameras using the Foresight SDK.</p>
+
+          <h6>Usage</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Usage</span>
+            </div>
+            <pre><code class="language-bash">./advanced_record_example [-rp &lt;record_folder_path&gt;] [-d &lt;record_duration&gt;] [-t &lt;host_ip&gt;]</code></pre>
+          </div>
+
+          <h6>Options</h6>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Option</th><th>Description</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>-rp &lt;record_folder_path&gt;</code></td><td>Path where the recorded data will be saved.</td><td><code>/mnt/foresight_videos</code></td></tr>
+                <tr><td><code>-d &lt;record_duration&gt;</code></td><td>Duration of the recording in seconds. Use <code>0</code> for indefinite recording.</td><td><code>0</code></td></tr>
+                <tr><td><code>-t &lt;host_ip&gt;</code></td><td>IP address of the Foresight host.</td><td><code>127.0.0.1</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h6>Features</h6>
+          <ul class="feature-list">
+            <li>Support for multiple stream recordings</li>
+            <li>Configurable recording duration</li>
+            <li>Automatic handling of the record output path</li>
+            <li>Stream configuration for flexible recording setups</li>
+          </ul>
+
+          <h6>Example</h6>
+          <p>Run the following commands:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Help Command</span>
+            </div>
+            <pre><code class="language-bash">cd /opt/foresight
+./bin/advanced_record_example -h</code></pre>
+          </div>
+
+          <p>This will print a help message with usage instructions.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Help Output</span>
+            </div>
+            <pre><code>./advanced_record_example -h
+Usage: ./advanced_record_example [-rp &lt;record_folder_path&gt;] [-d &lt;record_duration&gt;] [-t &lt;host_ip&gt;]
+    -rp &lt;record_folder_path&gt;  Optional: Path to record folder on the service side, default is "/mnt/foresight_videos"
+    -d &lt;record_duration&gt;      Optional: Record duration in seconds (0 for indefinite), default is 0
+    -t &lt;host_ip&gt;              Optional: Host IP address (default: 127.0.0.1)
+
+If record duration is 0, the system will record until the user stops the VisionService.
+All available streams will be recorded.</code></pre>
+          </div>
+
+          <p>To run the example with actual arguments, use:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Example Command</span>
+            </div>
+            <pre><code class="language-bash">./bin/advanced_record_example -rp /mnt/foresight_videos/ -d 10 -t 10.0.0.118</code></pre>
+          </div>
+
+          <p>This command will:</p>
+          <ul class="feature-list">
+            <li>Record data for 10 seconds</li>
+            <li>Save the Foresight data to the specified directory: <code>/mnt/foresight_videos/</code></li>
+            <li>Communicate with the Foresight host at IP address <code>10.0.0.118</code></li>
+            <li>Create a folder named <code>fs_data</code> within the specified path to store the recorded data</li>
+          </ul>
+
+          <p>Inside <code>fs_data</code>, a timestamped subfolder will be automatically created based on the recording time. For example: <code>record_20250424_113356</code></p>
+
+          <div class="image-gallery">
+            <figure>
+              <img src="record_mode_1.png" alt="Record Mode - Execution Output" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0;">
+              <figcaption>Record mode execution output</figcaption>
+            </figure>
+          </div>
+
+          <h4 id="example-location">2.5.4 SDK Example Code Location</h4>
+          <p>The example code is installed as part of the <code>mosquitto_client_api</code> package and can be found at:</p>
+          <div class="code-block">
+            <pre><code>/opt/foresight/examples/sdk-advanced-examples
+/opt/foresight/examples/sdk-basic-examples</code></pre>
+          </div>
+
+          <p>This directory contains <code>.hpp</code> and <code>.cpp</code> source files, along with a <code>CMakeLists.txt</code> file for building the examples.</p>
+
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="callout-content">
+              <p>Clients are permitted to copy, modify, delete, or use this code as a reference for their implementations.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SECTION 3: SDK SENDER -->
+      <!-- ============================================ -->
+      <section id="sender" class="doc-section" data-section="sender">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2>Foresight SDK Sender</h2>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <div class="callout-content">
+            <p>This section is for clients who want to send data from their video sources to the Foresight service via UDP. Clients using USB, Ethernet, and GMSL cameras can ignore this section.</p>
+          </div>
+        </div>
+
+        <div class="doc-subsection">
+          <h3>3.1 Overview</h3>
+          <p>The Remote Camera (RC) system is responsible for providing a synchronized video stream from two cameras: one positioned on the left and the other on the right. These two image sources must be combined into a single synchronized frame before transmission.</p>
+
+          <div class="diagram-container svg-diagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 -0.5 681 280" style="max-width: 70%; height: auto;">
+              <g>
+                <!-- Left Camera Icon -->
+                <g>
+                  <rect x="0" y="40" width="88.06" height="70" fill="none" stroke="none"/>
+                  <path d="M 20.03 64 L 12.03 64.11 L 11.92 62 L 20.03 61.89 Z M 24.03 61.89 C 24.03 59.75 22.28 58 20.14 58 L 11.92 58 C 9.78 58 8.03 59.75 8.03 61.89 L 8.03 64.11 C 8.03 66.25 9.78 68 11.92 68 L 20.14 68 C 22.28 68 24.03 66.25 24.03 64.11 Z M 47.57 91.75 C 40.14 91.75 34.1 85.71 34.1 78.28 C 34.1 70.85 40.14 64.81 47.57 64.81 C 54.99 64.81 61.04 70.85 61.04 78.28 C 61.04 85.71 54.99 91.75 47.57 91.75 Z M 47.57 60.81 C 37.94 60.81 30.1 68.65 30.1 78.28 C 30.1 87.91 37.94 95.75 47.57 95.75 C 57.2 95.75 65.04 87.91 65.04 78.28 C 65.04 68.65 57.2 60.81 47.57 60.81 Z M 47.57 98.14 C 36.62 98.14 27.71 89.23 27.71 78.28 C 27.71 67.33 36.62 58.42 47.57 58.42 C 58.52 58.42 67.43 67.33 67.43 78.28 C 67.43 89.23 58.52 98.14 47.57 98.14 Z M 47.57 54.42 C 34.41 54.42 23.71 65.13 23.71 78.28 C 23.71 91.44 34.41 102.14 47.57 102.14 C 60.73 102.14 71.43 91.44 71.43 78.28 C 71.43 65.13 60.73 54.42 47.57 54.42 Z M 84.03 102.88 C 84.03 104.6 82.63 106 80.91 106 L 7.15 106 C 5.43 106 4.03 104.6 4.03 102.88 L 4.03 57.12 C 4.03 55.4 5.43 54 7.15 54 L 12.03 54 L 24.03 54 L 32.29 54 C 33.23 54 34.05 53.33 34.24 52.41 L 35.74 45.27 C 35.89 44.53 36.55 44 37.3 44 L 57.83 44 C 58.59 44 59.25 44.54 59.4 45.27 L 60.9 52.41 C 61.09 53.33 61.91 54 62.85 54 L 80.91 54 C 82.63 54 84.03 55.4 84.03 57.12 Z M 14.03 48.54 C 14.03 48.24 14.27 48 14.57 48 L 21.49 48 C 21.79 48 22.03 48.24 22.03 48.54 L 22.03 50 L 14.03 50 Z M 80.91 50 L 64.48 50 L 63.32 44.45 C 62.78 41.87 60.47 40 57.83 40 L 37.3 40 C 34.66 40 32.36 41.87 31.82 44.46 L 30.66 50 L 26.03 50 L 26.03 48.54 C 26.03 46.04 23.99 44 21.49 44 L 14.57 44 C 12.07 44 10.03 46.04 10.03 48.54 L 10.03 50 L 7.15 50 C 3.23 50 0.03 53.19 0.03 57.12 L 0.03 102.88 C 0.03 106.8 3.23 110 7.15 110 L 80.91 110 C 84.83 110 88.03 106.8 88.03 102.88 L 88.03 57.12 C 88.03 53.19 84.83 50 80.91 50 Z" fill="#232f3d" stroke="none"/>
+                </g>
+                <!-- Right Camera Icon -->
+                <g>
+                  <rect x="0" y="160" width="88.06" height="70" fill="none" stroke="none"/>
+                  <path d="M 20.03 184 L 12.03 184.11 L 11.92 182 L 20.03 181.89 Z M 24.03 181.89 C 24.03 179.75 22.28 178 20.14 178 L 11.92 178 C 9.78 178 8.03 179.75 8.03 181.89 L 8.03 184.11 C 8.03 186.25 9.78 188 11.92 188 L 20.14 188 C 22.28 188 24.03 186.25 24.03 184.11 Z M 47.57 211.75 C 40.14 211.75 34.1 205.71 34.1 198.28 C 34.1 190.85 40.14 184.81 47.57 184.81 C 54.99 184.81 61.04 190.85 61.04 198.28 C 61.04 205.71 54.99 211.75 47.57 211.75 Z M 47.57 180.81 C 37.94 180.81 30.1 188.65 30.1 198.28 C 30.1 207.91 37.94 215.75 47.57 215.75 C 57.2 215.75 65.04 207.91 65.04 198.28 C 65.04 188.65 57.2 180.81 47.57 180.81 Z M 47.57 218.14 C 36.62 218.14 27.71 209.23 27.71 198.28 C 27.71 187.33 36.62 178.42 47.57 178.42 C 58.52 178.42 67.43 187.33 67.43 198.28 C 67.43 209.23 58.52 218.14 47.57 218.14 Z M 47.57 174.42 C 34.41 174.42 23.71 185.13 23.71 198.28 C 23.71 211.44 34.41 222.14 47.57 222.14 C 60.73 222.14 71.43 211.44 71.43 198.28 C 71.43 185.13 60.73 174.42 47.57 174.42 Z M 84.03 222.88 C 84.03 224.6 82.63 226 80.91 226 L 7.15 226 C 5.43 226 4.03 224.6 4.03 222.88 L 4.03 177.12 C 4.03 175.4 5.43 174 7.15 174 L 12.03 174 L 24.03 174 L 32.29 174 C 33.23 174 34.05 173.33 34.24 172.41 L 35.74 165.27 C 35.89 164.53 36.55 164 37.3 164 L 57.83 164 C 58.59 164 59.25 164.54 59.4 165.27 L 60.9 172.41 C 61.09 173.33 61.91 174 62.85 174 L 80.91 174 C 82.63 174 84.03 175.4 84.03 177.12 Z M 14.03 168.54 C 14.03 168.24 14.27 168 14.57 168 L 21.49 168 C 21.79 168 22.03 168.24 22.03 168.54 L 22.03 170 L 14.03 170 Z M 80.91 170 L 64.48 170 L 63.32 164.45 C 62.78 161.87 60.47 160 57.83 160 L 37.3 160 C 34.66 160 32.36 161.87 31.82 164.46 L 30.66 170 L 26.03 170 L 26.03 168.54 C 26.03 166.04 23.99 164 21.49 164 L 14.57 164 C 12.07 164 10.03 166.04 10.03 168.54 L 10.03 170 L 7.15 170 C 3.23 170 0.03 173.19 0.03 177.12 L 0.03 222.88 C 0.03 226.8 3.23 230 7.15 230 L 80.91 230 C 84.83 230 88.03 226.8 88.03 222.88 L 88.03 177.12 C 88.03 173.19 84.83 170 80.91 170 Z" fill="#232f3d" stroke="none"/>
+                </g>
+                <!-- Arrow from Left Camera to Client -->
+                <g>
+                  <path d="M 90 70 L 194.2 117.36" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10"/>
+                  <path d="M 198.98 119.54 L 191.16 119.83 L 194.2 117.36 L 194.06 113.45 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10"/>
+                </g>
+                <!-- Arrow from Right Camera to Client -->
+                <g>
+                  <path d="M 88.06 200 L 194 162.14" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10"/>
+                  <path d="M 198.95 160.38 L 193.53 166.03 L 194 162.14 L 191.18 159.44 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10"/>
+                </g>
+                <!-- Client Box -->
+                <g>
+                  <rect x="200" y="80" width="120" height="120" fill="#d5e8d4" stroke="#82b366"/>
+                  <text x="260" y="148" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="30px" text-anchor="middle">Client</text>
+                </g>
+                <!-- Arrow from Client to Foresight System -->
+                <g>
+                  <path d="M 330.5 155 L 330.5 145 L 500.5 145 L 500.5 134.5 L 519.5 150 L 500.5 165.5 L 500.5 155 Z" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10"/>
+                </g>
+                <!-- Video Frames Label -->
+                <text x="423" y="119" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle">Video Frames</text>
+                <!-- UDP Label -->
+                <text x="423" y="191" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle">UDP</text>
+                <!-- Foresight System Box -->
+                <g>
+                  <rect x="540" y="80" width="140" height="120" fill="#f8cecc" stroke="#b85450"/>
+                  <text x="610" y="135" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="30px" text-anchor="middle">Foresight</text>
+                  <text x="610" y="170" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="30px" text-anchor="middle">System</text>
+                </g>
+                <!-- Left Camera Label -->
+                <text x="43" y="25" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">Left Camera</text>
+                <!-- Right Camera Label -->
+                <text x="43" y="265" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">Right Camera</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div id="network-config" class="doc-subsection">
+          <h3>3.2 Network Configuration Parameters</h3>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Parameter</th><th>Default Value</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>FS Video Frames Port</td><td><code>31314</code></td><td>UDP port used by FS to receive video frames.</td></tr>
+                <tr><td>RC (Pegasus) Data Port</td><td><code>5556</code></td><td>UDP port used by the RC (Pegasus) to send video data.</td></tr>
+                <tr><td>Protocol</td><td><code>UDP</code></td><td>The communication protocol between client and server.</td></tr>
+                <tr><td>FS IP Address</td><td>IP Address</td><td>Must be predefined. RC and FS must reside within the same subnet.</td></tr>
+                <tr><td>Client IP Address</td><td>IP Address</td><td>Must be predefined by mutual agreement.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="communication" class="doc-subsection">
+          <h3>3.3 Communication Protocols</h3>
+          
+          <h4 id="video-frames-protocol">3.3.1 Video Frames Transmitting Protocol</h4>
+          <p>The video stream channel uses UDP protocol. The RC software performs the following steps:</p>
+          <ol class="numbered-list">
+            <li>Captures two images from its left and right video sources.</li>
+            <li>Combines them into a single synchronized frame.</li>
+            <li>Uses the provided SDK interface to send the frame to the FS via UDP.</li>
+          </ol>
+
+          <h4 id="data-chunking">3.3.2 Data Chunking and Transmission</h4>
+          <ul class="feature-list">
+            <li>The SDK interface automatically splits each combined frame into smaller chunks to ensure no UDP datagram exceeds the MTU.</li>
+            <li>Each datagram includes a custom header and a data segment.</li>
+            <li>All chunks belonging to the same frame share the same <code>sequence_number</code> and have an incrementing <code>segment_number</code>.</li>
+          </ul>
+
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="callout-content">
+              <p>The default UDP packet size used by Foresight is <strong>1400 bytes</strong>, including the header. This value can be modified upon mutual agreement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="client-udp" class="doc-subsection">
+          <h3>3.4 Client UDP Sender</h3>
+          
+          <h4 id="client-interface">3.4.1 Interface</h4>
+          <p>The <code>ClientUdpSender</code> interface handles:</p>
+          <ul class="feature-list">
+            <li>Initializing the network connection</li>
+            <li>Segmenting video frame data into UDP-compliant packet sizes</li>
+            <li>Transmitting one or two camera frames (left and/or right) over the network</li>
+          </ul>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">ClientUdpSender Class</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @class ClientUdpSender
+ * @brief Manages sending camera frame data over a UDP socket.
+ */
+class ClientUdpSender
+{
+public:
+    enum class CameraPosition
+    {
+        UNDEFINED = 0,
+        LEFT,
+        RIGHT,
+    };
+
+    explicit ClientUdpSender(const std::string& interface, uint32_t port,
+                             size_t packet_size = 1400U);
+    ~ClientUdpSender();
+
+    // Disable Copy and Move Semantics
+    ClientUdpSender(const ClientUdpSender&)             = delete;
+    ClientUdpSender& operator=(const ClientUdpSender&) = delete;
+    ClientUdpSender(ClientUdpSender&&)                  = delete;
+    ClientUdpSender& operator=(ClientUdpSender&&)       = delete;
+
+    foresight::error_code connect_to_remote();
+    void close();
+    void sendFrames(const uint8_t* left_buffer, const uint8_t* right_buffer,
+                    size_t frame_length);
+    void sendFrame(CameraPosition position, const uint8_t* buffer,
+                   size_t frame_length);
+
+    static const constexpr char* DEFAULT_INTERFACE = "127.0.0.1";
+    static constexpr uint32_t    DEFAULT_PORT = 31314U;
+};</code></pre>
+          </div>
+
+          <h4 id="key-functions">3.4.2 Key Functions and Notes</h4>
+          
+          <h5 id="class-clientudpsender">3.4.2.1 Class ClientUdpSender</h5>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">ClientUdpSender Class Definition</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @class ClientUdpSender
+ * @brief Manages sending camera frame data over a UDP socket.
+ *
+ * This class encapsulates the functionality required to establish a UDP client
+ * connection and send video frame data to a remote endpoint.
+ * It handles socket initialization, connection, and data transmission in
+ * fixed-size packets. The class is designed to be non-copyable and non-movable
+ * to ensure exclusive ownership of the underlying socket resource.
+ */
+class ClientUdpSender
+{
+public:
+    /**
+     * @brief Enum representing the position of the camera.
+     *
+     * This enum is used to specify the position of the camera (left or right)
+     * when sending frame data.
+     */
+    enum class CameraPosition
+    {
+        UNDEFINED = 0,
+        LEFT,
+        RIGHT,
+    };
+
+    explicit ClientUdpSender(const std::string&amp; interface, uint32_t port,
+                             size_t packet_size = 1400U);
+    ~ClientUdpSender();
+
+    ClientUdpSender(const ClientUdpSender&amp;)             = delete;
+    ClientUdpSender&amp; operator=(const ClientUdpSender&amp;) = delete;
+    ClientUdpSender(ClientUdpSender&amp;&amp;)                  = delete;
+    ClientUdpSender&amp; operator=(ClientUdpSender&amp;&amp;)       = delete;
+
+    foresight::error_code connect_to_remote();
+    void close();
+
+    void sendFrames(const uint8_t* left_buffer, const uint8_t* right_buffer,
+                    size_t frame_length);
+    void sendFrame(CameraPosition position, const uint8_t* buffer,
+                   size_t frame_length);
+
+    static const constexpr char* DEFAULT_INTERFACE = "127.0.0.1";
+    static constexpr uint32_t    DEFAULT_PORT = 31314U;
+
+private:
+    foresight::error_code init();
+    foresight::error_code connect();
+    foresight::error_code write(const uint8_t* buffer, size_t size);
+
+    std::string          m_remote_host{};
+    uint32_t             m_remote_port{};
+    uint64_t             m_frameNumber{1};
+    std::vector&lt;uint8_t&gt; m_send_buffer;
+    size_t               m_packet_size{1400};
+    bool                 m_socket_initialized{false};
+    bool                 m_socket_opened{false};
+    pollfd               m_fds = {-1, 0, 0};
+};</code></pre>
+          </div>
+          
+          <h5 id="sender-methods">3.4.2.2 Methods</h5>
+
+          <h6>3.4.2.2.1 Constructor</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Constructor</span>
+            </div>
+            <pre><code class="language-cpp">explicit ClientUdpSender(const std::string&amp; interface, uint32_t port,
+                         size_t packet_size = 1400U);</code></pre>
+          </div>
+
+          <h6>3.4.2.2.2 Destructor</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Destructor</span>
+            </div>
+            <pre><code class="language-cpp">~ClientUdpSender();</code></pre>
+          </div>
+
+          <h6>3.4.2.2.3 Disable Copy and Move Semantics</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Deleted Copy/Move Operations</span>
+            </div>
+            <pre><code class="language-cpp">ClientUdpSender(const ClientUdpSender&amp;)             = delete;
+ClientUdpSender&amp; operator=(const ClientUdpSender&amp;) = delete;
+ClientUdpSender(ClientUdpSender&amp;&amp;)                  = delete;
+ClientUdpSender&amp; operator=(ClientUdpSender&amp;&amp;)       = delete;</code></pre>
+          </div>
+
+          <h6>3.4.2.2.4 connect_to_remote()</h6>
+          <p>Initializes the socket and connects to the configured remote host and port.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Connect to Remote</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @brief Establishes a connection to the remote UDP server.
+ *
+ * This method initializes the UDP socket and connects it to the specified
+ * remote host and port.
+ *
+ * @return foresight::error_code
+ */
+foresight::error_code connect_to_remote();</code></pre>
+          </div>
+
+          <h6>3.4.2.2.5 close()</h6>
+          <p>Closes the socket and releases resources.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Close Socket</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @brief Closes the UDP socket.
+ *
+ * This method closes the UDP socket and releases any associated resources.
+ */
+void close();</code></pre>
+          </div>
+
+          <h6>3.4.2.2.6 sendFrames()</h6>
+          <p>Sends a pair of frames (left and right). Handles segmentation internally.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Send Frame Pair</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @brief Sends frames to the remote host.
+ *
+ * This method sends a pair of frames (left and right) to the remote host.
+ * It handles segmentation of the data into packets if necessary.
+ *
+ * @param left_buffer Pointer to the left frame buffer.
+ * @param right_buffer Pointer to the right frame buffer.
+ * @param frame_length Length of each frame in bytes.
+ */
+void sendFrames(const uint8_t* left_buffer, const uint8_t* right_buffer,
+                size_t frame_length);</code></pre>
+          </div>
+
+          <h6>3.4.2.2.7 sendFrame()</h6>
+          <p>Sends a single frame from either the left or right camera.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Send Single Frame</span>
+            </div>
+            <pre><code class="language-cpp">/**
+ * @brief Sends a single frame to the remote host.
+ *
+ * This method sends a single frame (either left or right) to the remote host.
+ * It handles segmentation of the data into packets if necessary.
+ *
+ * @param position The camera position (left or right).
+ * @param buffer Pointer to the frame buffer.
+ * @param frame_length Length of the frame in bytes.
+ */
+void sendFrame(CameraPosition position, const uint8_t* buffer,
+               size_t frame_length);</code></pre>
+          </div>
+
+          <h6>3.4.2.2.8 CameraPosition Enum</h6>
+          <p>Used to specify the source camera (left or right) when sending individual frames.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">CameraPosition Enum</span>
+            </div>
+            <pre><code class="language-cpp">enum class CameraPosition
+{
+    UNDEFINED = 0,
+    LEFT,
+    RIGHT,
+};</code></pre>
+          </div>
+
+          <h6>3.4.2.2.9 Defaults</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Default Constants</span>
+            </div>
+            <pre><code class="language-cpp">static const constexpr char* DEFAULT_INTERFACE = "127.0.0.1"; // Default address
+static constexpr uint32_t    DEFAULT_PORT = 31314U;           // Default port</code></pre>
+          </div>
+
+          <h6>3.4.2.2.10 Private Methods and Members</h6>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Private Members</span>
+            </div>
+            <pre><code class="language-cpp">private:
+    foresight::error_code init();     // Internal setup
+    foresight::error_code connect();  // Internal connection
+    foresight::error_code write(const uint8_t* buffer, size_t size); // Transmission
+
+    std::string          m_remote_host{};
+    uint32_t             m_remote_port{};
+    uint64_t             m_frameNumber{1};
+    std::vector&lt;uint8_t&gt; m_send_buffer;
+    size_t               m_packet_size{1400};
+    bool                 m_socket_initialized{false};
+    bool                 m_socket_opened{false};
+    pollfd               m_fds = {-1, 0, 0};</code></pre>
+          </div>
+          <br><br>
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="callout-content">
+              <h4>Frame Length Calculation</h4>
+              <p>The total frame length in bytes can be calculated using:</p>
+              <code class="formula">frame_length = (width × height × bpp) / 8</code>
+              <p>Where: <code>width</code> = frame width (e.g., 3840), <code>height</code> = frame height (e.g., 1232), <code>bpp</code> = bits per pixel</p>
+            </div>
+          </div>
+        </div>
+          <h4 id="execution-steps">3.4.3 Execution Steps</h4>
+          <ol class="numbered-list">
+            <li><strong>Parse command-line arguments:</strong> retrieve IP address, UDP port, and packet size.</li>
+            <li><strong>Create ClientUdpSender instance:</strong> instantiate using parsed IP, port, and packet size.</li>
+            <li><strong>Initialize the UDP socket:</strong> call <code>connect_to_remote()</code>.</li>
+            <li><strong>Calculate frame length:</strong> <code>frame_length = width × height × bpp / 8</code></li>
+            <li><strong>Read video frames:</strong> capture left and right images.</li>
+            <li><strong>Send frames in a loop:</strong> use <code>sendFrames()</code> method.</li>
+            <li><strong>Close UDP socket:</strong> call <code>close()</code> method.</li>
+          </ol>
+
+          <h4 id="sender-example">3.4.4 Client UDP Sender Example</h4>
+          <p>Below is a simplified example demonstrating how to use the <code>ClientUdpSender</code> class:</p>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">C++</span>
+              <span class="code-title">Client UDP Sender Example</span>
+            </div>
+            <pre><code class="language-cpp">#include &lt;foresight/sdk/ClientUdpSender.h&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char* argv[])
+{
+    // Configuration
+    std::string ip_address = "127.0.0.1";
+    uint32_t port = 31314;
+    size_t packet_size = 1400;
+    
+    // Frame dimensions
+    int width = 1920;
+    int height = 1080;
+    int bpp = 24; // RGB format
+    size_t frame_length = (width * height * bpp) / 8;
+    
+    // Create sender instance
+    foresight::ClientUdpSender sender(ip_address, port, packet_size);
+    
+    // Initialize connection
+    auto error = sender.connect_to_remote();
+    if (error) {
+        std::cerr &lt;&lt; "Failed to connect: " &lt;&lt; error.message() &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    // Allocate frame buffers
+    std::vector&lt;uint8_t&gt; left_frame(frame_length);
+    std::vector&lt;uint8_t&gt; right_frame(frame_length);
+    
+    // Main loop - send frames
+    while (running) {
+        // Capture/generate frame data...
+        
+        // Send stereo pair
+        sender.sendFrames(left_frame.data(), right_frame.data(), frame_length);
+    }
+    
+    // Cleanup
+    sender.close();
+    return 0;
+}</code></pre>
+          </div>
+
+          <h4 id="running-sender">3.4.5 Running the Client UDP Sender Example</h4>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Usage</span>
+            </div>
+            <pre><code class="language-bash">./client_udp_sender_example -s &lt;width&gt;x&lt;height&gt; -f &lt;fps&gt; -c &lt;type&gt; -u &lt;packet_size&gt; -a &lt;address&gt; -p &lt;port&gt;</code></pre>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Option</th><th>Description</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>-h</code></td><td>Prints help message</td><td>-</td></tr>
+                <tr><td><code>-s &lt;width&gt;x&lt;height&gt;</code></td><td>Frame size</td><td><code>0x0</code></td></tr>
+                <tr><td><code>-f &lt;fps&gt;</code></td><td>Frames per second</td><td><code>30</code></td></tr>
+                <tr><td><code>-c &lt;type&gt;</code></td><td>Camera type: <code>single</code>, <code>stereo_high</code></td><td><code>stereo_high</code></td></tr>
+                <tr><td><code>-u &lt;packet_size&gt;</code></td><td>UDP packet size</td><td><code>1400</code></td></tr>
+                <tr><td><code>-a &lt;ip_address&gt;</code></td><td>FS server IP address</td><td><code>127.0.0.1</code></td></tr>
+                <tr><td><code>-p &lt;udp_port&gt;</code></td><td>UDP port</td><td><code>31314</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+              <span class="code-title">Example Command</span>
+            </div>
+            <pre><code class="language-bash">cd /opt/foresight
+./bin/client_udp_sender_example -s 3840x1232 -f 10 -a 127.0.0.1 -p 31314</code></pre>
+          </div>
+
+          <h4 id="bpp">3.4.6 Bits Per Pixel (BPP)</h4>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr><th>Format</th><th>BPP</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>RGB</td><td>24</td></tr>
+                <tr><td>RGBA</td><td>32</td></tr>
+                <tr><td>BGR</td><td>24</td></tr>
+                <tr><td>BGRA</td><td>32</td></tr>
+                <tr><td>I420</td><td>12</td></tr>
+                <tr><td>NV12</td><td>12</td></tr>
+                <tr><td>NV21</td><td>12</td></tr>
+                <tr><td>YUY2</td><td>16</td></tr>
+                <tr><td>GRAY8</td><td>8</td></tr>
+                <tr><td>YUV422P</td><td>16</td></tr>
+                <tr><td>YUV444P</td><td>24</td></tr>
+              </tbody>
+            </table>
+          </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SECTION 4: BEST PRACTICES -->
+      <!-- ============================================ -->
+      <section id="best-practices" class="doc-section" data-section="best-practices">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2>Best Practices</h2>
+        </div>
+        <p>To ensure robust, efficient, and maintainable integration with the Foresight SDK, follow these best practices:</p>
+
+        <div class="best-practice-grid">
+          <div class="best-practice-card">
+            <div class="bp-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h4>Error Handling</h4>
+            <ul>
+              <li>Always check return values from all SDK function calls</li>
+              <li>Use try-catch blocks to manage exceptions gracefully</li>
+              <li>Validate all input parameters before passing them to SDK methods</li>
+              <li>Implement a logging system using the SDK's logging callback interface</li>
+            </ul>
+          </div>
+
+          <div class="best-practice-card">
+            <div class="bp-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <h4>Resource Management</h4>
+            <ul>
+              <li>Properly initialize and clean up all SDK resources</li>
+              <li>Use smart pointers (<code>std::shared_ptr</code>, <code>std::unique_ptr</code>)</li>
+              <li>Ensure all data streams and network connections are explicitly closed</li>
+            </ul>
+          </div>
+
+          <div class="best-practice-card">
+            <div class="bp-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h4>Performance</h4>
+            <ul>
+              <li>Monitor CPU, memory, and bandwidth usage</li>
+              <li>Configure stream settings according to system capabilities</li>
+              <li>Use efficient data formats and processing paths</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SECTION 5: SUPPORT & RESOURCES -->
+      <!-- ============================================ -->
+      <section id="support" class="doc-section" data-section="support">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2>Support &amp; Resources</h2>
+        </div>
+        <p>For additional assistance while working with the Foresight SDK, the following resources are available:</p>
+        
+        <div class="doc-subsection">
+          <h3>SDK File Locations</h3>
+          <div class="table-wrapper">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Resource</th>
+                  <th>Path</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SDK Headers</td>
+                  <td><code>/opt/foresight/include/foresight/sdk</code></td>
+                  <td>C++ header files for SDK integration</td>
+                </tr>
+                <tr>
+                  <td>Basic Examples</td>
+                  <td><code>/opt/foresight/examples/sdk-basic-examples</code></td>
+                  <td>Simple usage examples for getting started</td>
+                </tr>
+                <tr>
+                  <td>Advanced Examples</td>
+                  <td><code>/opt/foresight/examples/sdk-advanced-examples</code></td>
+                  <td>Complex integration patterns and use cases</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="doc-subsection">
+          <h3>Quick Reference</h3>
+          <div class="support-grid">
+            <div class="support-card">
+              <div class="support-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <h4>Default Configuration</h4>
+              <ul class="config-list">
+                <li><strong>UDP Port:</strong> 31314</li>
+                <li><strong>Packet Size:</strong> 1400 bytes</li>
+                <li><strong>Protocol:</strong> UDP (client-server)</li>
+              </ul>
+            </div>
+            <div class="support-card">
+              <div class="support-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <h4>Example Commands</h4>
+              <ul class="config-list">
+                <li><strong>Playback:</strong> <code>--playback &lt;file&gt;</code></li>
+                <li><strong>Algo:</strong> <code>--algo &lt;file&gt;</code></li>
+                <li><strong>Record:</strong> <code>--record &lt;file&gt;</code></li>
+              </ul>
+            </div>
+            <div class="support-card">
+              <div class="support-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <h4>Contact Support</h4>
+              <p>For technical assistance or integration guidance, contact the Foresight R&amp;D team.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="doc-footer">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img src="foresightlogo.png" alt="Foresight" class="footer-logo-img">
+          </div>
+          <p>© 2025 Foresight Autonomous Holdings Ltd. All rights reserved.</p>
+          <p class="footer-note">This document is confidential and proprietary.</p>
+        </div>
+      </footer>
+
+    </main>
+
+  <script>
+    // Toggle deep navigation on click
+    document.addEventListener('DOMContentLoaded', function() {
+      // Find all links that have a sibling .sidebar-subnav-deep
+      const expandableLinks = document.querySelectorAll('.sidebar-sublink');
+      
+      expandableLinks.forEach(function(link) {
+        const deepNav = link.nextElementSibling;
+        if (deepNav && deepNav.classList.contains('sidebar-subnav-deep')) {
+          link.classList.add('expandable');
+          
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            link.classList.toggle('expanded');
+            deepNav.classList.toggle('expanded');
+          });
+        }
+      });
+
+      // Also handle direct navigation to anchors within deep nav
+      const deepLinks = document.querySelectorAll('.sidebar-subnav-deep a');
+      deepLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          // Allow the link to work but keep the menu open
+          const parentDeep = link.closest('.sidebar-subnav-deep');
+          if (parentDeep) {
+            parentDeep.classList.add('expanded');
+            const toggle = parentDeep.previousElementSibling;
+            if (toggle) toggle.classList.add('expanded');
+          }
+        });
+      });
+
+      // Expand section if page loads with hash pointing to deep item
+      if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          const deepNav = document.querySelector('.sidebar-subnav-deep a[href="' + window.location.hash + '"]');
+          if (deepNav) {
+            const parentDeep = deepNav.closest('.sidebar-subnav-deep');
+            if (parentDeep) {
+              parentDeep.classList.add('expanded');
+              const toggle = parentDeep.previousElementSibling;
+              if (toggle) toggle.classList.add('expanded');
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
